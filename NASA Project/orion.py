@@ -17,7 +17,7 @@ space_sphere = Entity(
     double_sided=True,  
 )
 
-model = load_model('orion_capsule.obj')  
+model = load_model('assets/orion-models/orion_capsule.obj')  
 
 entity = Entity(model=model, scale=1, rotation_y=45)
 
