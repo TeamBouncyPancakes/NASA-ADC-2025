@@ -18,7 +18,7 @@ z_velocity = ms_data['Vz(km/s)[J2000-EARTH]'].to_numpy()
 test = np.array(x_velocity**2 + y_velocity**2 + z_velocity**2)
 
 overall_velocity = np.array(np.sqrt(test))
-
+print(overall_velocity)
 
 mass = ms_data['MASS (kg)'].to_numpy()
 
