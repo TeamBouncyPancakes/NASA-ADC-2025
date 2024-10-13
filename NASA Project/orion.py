@@ -25,7 +25,8 @@ def update():
     entity.rotation_y += 48 * time.dt
 
 def input():
-    if held_keys[]
+    if held_keys['escape']:
+        quit(code=300)
 
 light = DirectionalLight(parent=entity)
 light.look_at(entity)
