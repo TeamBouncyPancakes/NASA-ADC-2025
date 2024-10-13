@@ -23,7 +23,7 @@ def create_trajectory_line():
 
 app = Ursina(size=(1000,500))
 
-model = Entity(model='assets/textures-models/orion-models/orion3.obj', scale=(1, 1, 1), color=color.green)
+model = Entity(model='assets/textures-models/orion-models/orion3.obj', scale=(1, 1, 1), color=color.light_gray)
 
 
 index = 1
