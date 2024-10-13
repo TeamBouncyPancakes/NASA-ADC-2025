@@ -20,6 +20,7 @@ space_sphere = Entity(
 
 space_sphere.layer = 0
 
+
 service_module = load_model('assets/orion-models/orion_service_module.obj')
 capsule = load_model('assets/orion-models/orion_capsule_new.obj')
 
@@ -41,10 +42,15 @@ light.look_at(capsule_entity)
 
 
 player = FirstPersonController()
+
 player.cursor.scale = 0.0001
+
+
 player.speed = 25
 player.gravity = 0
 player.scale = 0.5
 
 
+
 app.run()
+
