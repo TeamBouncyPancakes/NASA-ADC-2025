@@ -28,8 +28,8 @@ def update():
     moon.rotation_y -= 0.0366
 
 class Planet:
-    def __init__(self, tripscale, file, pos=(0, 0, 0)):
-        self.entity = Entity(model="sphere", texture=file, scale=(tripscale, tripscale, tripscale), position=pos)
+    def __init__(self, scale, file, pos=(0, 0, 0)):
+        self.entity = Entity(model="sphere", texture=file, scale=(scale, scale, scale), position=pos)
 earth = Planet(2, "assets/textures-models/planet-textures/earth.jpg").entity
 moon = Planet(0.54, "assets/textures-models/planet-textures/moon.jpg", pos=(60, 0, 0)).entity
 earth.cull_faces, earth.double_sided = False, True

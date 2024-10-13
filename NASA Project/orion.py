@@ -8,7 +8,7 @@ import pandas as pd
 
 app = Ursina()
 
-space_texture = 'HDR_red_local_star.hdr'
+space_texture = 'assets/textures-models/space-textures/space4.jpg'
 
 space_sphere = Entity(
     model='sphere',
@@ -17,12 +17,15 @@ space_sphere = Entity(
     double_sided=True,  
 )
 
-model = load_model('assets/orion-models/orion_capsule.obj')  
+model = load_model('assets/orion-models/orion_capsule_new.obj')
 
 entity = Entity(model=model, scale=1, rotation_y=45)
 
 def update():
     entity.rotation_y += 48 * time.dt
+
+def input():
+    if held_keys[]
 
 light = DirectionalLight(parent=entity)
 light.look_at(entity)
