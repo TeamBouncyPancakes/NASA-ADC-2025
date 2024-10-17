@@ -20,7 +20,7 @@ model_name = "DSN_34"
 antenna = load_model(f'assets/textures-models/antenna-stuff/{model_name}.obj')
 
 def input(key):
-    if key == "escape" or key == "q":
+    if key == "escape":
         exit()
     earth.rotation_x += (held_keys['x'] * time.dt) * 1000
     earth.rotation_y += (held_keys['y'] * time.dt) * 1000
