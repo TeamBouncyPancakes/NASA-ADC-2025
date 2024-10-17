@@ -22,6 +22,8 @@ antenna = load_model('assets/textures-models/antenna-stuff/DSN_34.obj')
 
 antenna_entity = Entity(model = antenna)
 
+
+
 light = DirectionalLight(parent=antenna_entity)
 light.look_at(antenna_entity)
 

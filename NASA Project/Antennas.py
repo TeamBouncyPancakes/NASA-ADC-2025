@@ -11,7 +11,13 @@ app = Ursina()
 
 camera = EditorCamera()
 
-antenna = load_model('assets/textures-models/antenna-stuff/WayBetterDecimated.obj')
+camera.fov = 155
+
+point_index = 0
+distance = 0
+
+model_name = "DSN_34"
+antenna = load_model(f'assets/textures-models/antenna-stuff/{model_name}.obj')
 
 def input(key):
     if key == "escape" or key == "q":
@@ -37,6 +43,15 @@ class Planet:
 
 def lat_lon_to_3d(lat, lon, radius):
     """Convert latitude and longitude to 3D coordinates on a sphere."""
+
+    # Check if latitude is within the valid range
+    if not (-90 <= lat <= 90):
+        raise ValueError("Latitude must be between -90 and 90 degrees.")
+
+    # Check if longitude is within the valid range
+    if not (-180 <= lon <= 180):
+        raise ValueError("Longitude must be between -180 and 180 degrees.")
+
     lat_rad = math.radians(lat)
     lon_rad = math.radians(lon)
 
@@ -48,7 +63,7 @@ def lat_lon_to_3d(lat, lon, radius):
 def place_marker(lat, lon, radius, color=color.white, scale=0.0005, parent=None, texture=None):
     """Place a marker at the specified latitude and longitude on the sphere."""
     position = lat_lon_to_3d(lat, lon, radius)  # Exact surface position
-    marker = Entity(model=antenna, scale=scale, parent=parent, color=color, position=position, texture=texture)
+    marker = Entity(model=antenna, scale=scale, color=color, position=position, texture=texture, parent=earth)
     return marker
 
 # Create the Earth and Moon
@@ -70,12 +85,15 @@ antenna_locations = [
     (35.3399, -116.875),  # CA
     (-35.5985, 148.982),  # Aus
     (40.5276, -4.5271),  # ESP
+
+
 ]
 
+place_marker(35.3399, -116.875, radius=0.5, color=color.red, scale=0.006)
+place_marker(-35.5985, 148.982, radius=0.5, color=color.red, scale=0.006)
+place_marker(40.5276, -4.5271, radius=0.5, color=color.red, scale=0.006)
+
 # Place markers on Earth and set them as children of the Earth entity, ensuring they touch the surface
-for lat, lon in antenna_locations:
-    place_marker(lat, lon, radius=0.5, color=color.red, scale=0.001, parent=earth)  # Attach antennas to Earth
-    #place_marker(0.0, 0.0, radius=0.5, color=color.red, scale=0.01, parent=earth)  # Attach antennas to Earth
 mouse.locked = True
 
 

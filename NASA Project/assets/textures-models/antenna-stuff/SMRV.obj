@@ -1,6 +1,6 @@
 # Blender 4.2.2 LTS
 # www.blender.org
-mtllib WayBetterDecimated.mtl
+mtllib SMRV.mtl
 o Deep_Space_Network_34-meter_Antenna
 v 0.242975 -0.458516 0.075961
 v 0.336035 -0.365456 0.448205
