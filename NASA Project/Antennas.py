@@ -9,18 +9,14 @@ import time
 
 app = Ursina()
 
-camera = EditorCamera()
+camera = FirstPersonController(gravity=0)
 
-camera.fov = 155
+antenna = load_model('assets/textures-models/antenna-stuff/Antenna_model')
 
-point_index = 0
-distance = 0
-
-model_name = "DSN_34"
-antenna = load_model(f'assets/textures-models/antenna-stuff/{model_name}.obj')
+orion = load_model('assets/textures-models/orion-models/orion2.obj')
 
 def input(key):
-    if key == "escape":
+    if key == "escape" or key == "q":
         exit()
     earth.rotation_x += (held_keys['x'] * time.dt) * 1000
     earth.rotation_y += (held_keys['y'] * time.dt) * 1000
@@ -43,15 +39,6 @@ class Planet:
 
 def lat_lon_to_3d(lat, lon, radius):
     """Convert latitude and longitude to 3D coordinates on a sphere."""
-
-    # Check if latitude is within the valid range
-    if not (-90 <= lat <= 90):
-        raise ValueError("Latitude must be between -90 and 90 degrees.")
-
-    # Check if longitude is within the valid range
-    if not (-180 <= lon <= 180):
-        raise ValueError("Longitude must be between -180 and 180 degrees.")
-
     lat_rad = math.radians(lat)
     lon_rad = math.radians(lon)
 
@@ -60,10 +47,10 @@ def lat_lon_to_3d(lat, lon, radius):
     z = radius * math.cos(lat_rad) * math.sin(lon_rad)
     return Vec3(x, y, z)
 
-def place_marker(lat, lon, radius, color=color.white, scale=0.0005, parent=None, texture=None):
+def place_marker(lat, lon, radius, color=color.white, scale=0.0005, parent=None, texture=None, model=load_model('assets/textures-models/antenna-stuff/Antenna_model')):
     """Place a marker at the specified latitude and longitude on the sphere."""
     position = lat_lon_to_3d(lat, lon, radius)  # Exact surface position
-    marker = Entity(model=antenna, scale=scale, color=color, position=position, texture=texture, parent=earth)
+    marker = Entity(model=model, scale=scale, parent=parent, color=color, position=position, texture=texture)
     return marker
 
 # Create the Earth and Moon
@@ -72,7 +59,6 @@ moon = Planet(0.54, "assets/textures-models/planet-textures/moon.jpg", pos=(60, 
 earth.cull_faces, earth.double_sided = False, True
 moon.cull_faces, moon.double_sided = False, True
 
-# Editor camera
 
 # Sky background
 Sky(texture="assets/textures-models/space-textures/space4.jpg")
@@ -82,20 +68,32 @@ earth_radius = 1.0  # The Earth's radius in your model is 1.0 unit (due to model
 
 # Add Artemis II antenna markers (example latitudes and longitudes)
 antenna_locations = [
-    (35.3399, -116.875),  # CA
-    (-35.5985, 148.982),  # Aus
-    (40.5276, -4.5271),  # ESP
-
-
+    (35.3399, -116.875), # California
+    (-35.5985, 148.982), # Australia
+    (40.5276, -4.5271), # Spain
 ]
 
-place_marker(35.3399, -116.875, radius=0.5, color=color.red, scale=0.006)
-place_marker(-35.5985, 148.982, radius=0.5, color=color.red, scale=0.006)
-place_marker(40.5276, -4.5271, radius=0.5, color=color.red, scale=0.006)
+antenna_models = [
+    load_model('assets/textures-models/antenna-stuff/Antenna_model'),
+    load_model('assets/textures-models/antenna-stuff/Antenna_model1'),
+    load_model('assets/textures-models/antenna-stuff/Antenna_model2'),
+    #load_model('assets/textures-models/antenna-stuff/Antenna_model3')
+]
+
+antenna_model_number = -1
 
 # Place markers on Earth and set them as children of the Earth entity, ensuring they touch the surface
+for lat, lon in antenna_locations:
+    antenna_model_number += 1
+    place_marker(lat, lon, radius=0.5, color=color.red, scale=0.01, parent=earth, model=antenna_models[antenna_model_number])  # Attach antennas to Earth
+    #place_marker(0.0, 0.0, radius=0.5, color=color.red, scale=0.01, parent=earth)  # Attach antennas to Earth
 mouse.locked = True
 
+def update():
+    if held_keys['shift']:
+        camera.y -= 0.1
+    if held_keys['space']:
+        camera.y += 0.1
 
 
 app.run()
