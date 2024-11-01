@@ -127,4 +127,7 @@ for lat, lon in antenna_locations:
     place_marker(lat, lon, radius=0.5, color=color.white, scale=0.01, parent=earth, model=antenna_models[model_number])  # Attach antennas to Earth
     model_number += 1
 
-app.run()
+def start():
+    app.run()
+
+start()
