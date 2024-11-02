@@ -23,8 +23,17 @@ def create_trajectory_line():
 
 app = Ursina(size=(1000,500))
 
-model = Entity(model='assets/textures-models/orion-models/orion_service_module.obj', scale=(1, 1, 1), color=color.light_gray)
-model2 = Entity(model='assets/textures-models/orion-models/orion_capsule_new.obj', scale=(1, 1, 1), color=color.light_gray)
+service_module = Entity(model='assets/textures-models/orion-models/orion_service_module.obj', scale=(1, 1, 1), color=color.light_gray)
+capsule = Entity(model='assets/textures-models/orion-models/orion_capsule_new.obj', scale=(1, 1, 1), color=color.light_gray)
+
+capsule_entity = Entity(model=capsule, position=(0,0,0))
+service_module_entity = Entity(model=service_module, scale = 1, position=(0,1.2,0))
+
+orion = Entity(scale = (0.3,0.3,0.3))
+orion.position=(0, 0, 0)
+
+capsule_entity.parent = orion
+service_module_entity.parent = orion
 
 index = 1
 
@@ -74,8 +83,7 @@ def update():
     if held_keys["escape"]:
         quit()
     if point_index < len(points):
-        model.position = points[point_index]
-        model2.position = points[point_index]
+        orion.position = points[point_index]
         speed = overall_velocity[point_index]
         x,y,z = points[point_index]
         x2,y2,z2 = points[point_index+1]
