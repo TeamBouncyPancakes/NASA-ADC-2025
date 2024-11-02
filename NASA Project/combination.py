@@ -1,7 +1,7 @@
 import pandas as pd
 from ursina import *
 import numpy as np
-
+from antenna_func import antenna_prioritize
 
 ms_data = pd.read_csv('middle-school-data.csv')
 
@@ -92,11 +92,10 @@ class Planet:
     def __init__(self, scale, file, pos=(0, 0, 0)):
         self.entity = Entity(model="sphere", texture=file, scale=(scale, scale, scale), position=pos)
 earth = Planet(12742 * scale_factor, "assets/textures-models/planet-textures/earth.jpg").entity
-moon = Planet(3474 * scale_factor, "assets/textures-models/planet-textures/moon.jpg", pos=(-384400 * scale_factor, -17, -5)).entity
+moon = Planet(3474 * scale_factor, "assets/textures-models/planet-textures/moon.jpg", pos=((-384400 * scale_factor) + 1, -16.25, -8)).entity
 earth.cull_faces, earth.double_sided = False, True
 moon.cull_faces, moon.double_sided = False, True
 space_bg = Sky(texture="assets/textures-models/space-textures/space4.jpg")
-
 
 def lat_lon_to_3d(lat, lon, radius):
     """Convert latitude and longitude to 3D coordinates on a sphere."""
@@ -128,4 +127,7 @@ for lat, lon in antenna_locations:
     place_marker(lat, lon, radius=0.5, color=color.white, scale=0.01, parent=earth, model=antenna_models[model_number])  # Attach antennas to Earth
     model_number += 1
 
-app.run()
+def start():
+    app.run()
+
+start()
