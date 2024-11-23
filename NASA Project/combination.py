@@ -174,7 +174,7 @@ inter = 0.75
 
 def update():
 
-    global point_index, speed, points, distance, model, current, trajectory_line, phase, pi, ci, inter, h
+    global point_index, speed, points, distances, distance, model, current, trajectory_line, phase, pi, ci, inter, times
     # WASD camera movement
     if held_keys['w']: editor_camera.position += editor_camera.forward * time.dt * 5  # Move forward
     if held_keys['s']: editor_camera.position -= editor_camera.forward * time.dt * 5  # Move backward
