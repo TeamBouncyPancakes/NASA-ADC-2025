@@ -423,11 +423,24 @@ for lat, lon in antenna_locations:
     model_number += 1
 
 
+"""
+Be aware that `ui_objs` is when the home ui is showing.
+`non_ui` is when the trajectory is showing.
+"""
 
 ui_objs = [logo, viewer_button, quit_button, play_button, viewer_text, play_text, quit_text, subtitle, menu_text, bg]
-non_ui = [trajectory_line, earth, moon, space_bg, model]
+non_ui = [trajectory_line, earth, moon, space_bg, model, distanceup, phaseup, timeup, key1, antennatitle, antenna1, antenna2, antenna3,
+          antenna4, distancetotal, phaselabel, timelabel]
+
 for antenna in antennas:
     non_ui.append(antenna)
+
+# add all 3 antennas
+
+for num in ['2', '3', '4', '5', '6', '7', '8', '9', '0', '15']:
+    for part in ['a', 'b']:
+        exec(f"non_ui.append(key{num}{part})")
+# add all the trajectory ui things
 
 model_number = 0
 
