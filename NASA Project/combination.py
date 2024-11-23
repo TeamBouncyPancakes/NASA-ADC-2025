@@ -174,7 +174,7 @@ inter = 0.75
 
 def update():
 
-    global point_index, speed, points, distance
+    global point_index, speed, points, distance, model, current, trajectory_line, phase, pi, ci, inter, h
     # WASD camera movement
     if held_keys['w']: editor_camera.position += editor_camera.forward * time.dt * 5  # Move forward
     if held_keys['s']: editor_camera.position -= editor_camera.forward * time.dt * 5  # Move backward
@@ -230,7 +230,6 @@ def update():
             h = times[point_index+1] - times[point_index]
             h *= 60
             h = h/25960.633996
-
 
         model.position =  Vec3(currents.x,currents.y,currents.z) #clean_line(currents, next, inter)
         speed = overall_velocity[point_index]
