@@ -145,6 +145,7 @@ trajectory_line, current = create_trajectory_line(colors[ci], 0, 1)
 
 editor_camera = EditorCamera(pan_speed=1000)
 
+
 camera.fov = 155
 
 point_index = 0
@@ -210,22 +211,22 @@ key15b = Text(text="Lime", x=-1.05, y=-0.35, font='assets/fonts/SpaceMono-Regula
 
 distances = []
 
-antennas = [{'name': 'WPSA', 'value': 1000, 'color': color.red}, {'name': 'DS54', 'value': 800, 'color': color.blue},
-            {'name': 'DS24', 'value': 600, 'color': color.green}, {'name': 'DS34', 'value': 400, 'color': color.orange}]
-
-antennatitle = Text(text="Antenna priority", x=0.97, y=0, size=0.02, font='assets/fonts/SpaceMono-Regular.ttf')
-
-antenna1 = Text(text="1) " + antennas[0]['name'] + " - " + str(antennas[0]['value']), x=0.9, y=-0.05, size=0.04,
-                font='assets/fonts/SpaceMono-Regular.ttf', color=antennas[0]['color'])
-
-antenna2 = Text(text="2) " + antennas[1]['name'] + " - " + str(antennas[1]['value']), x=0.9, y=-0.1, size=0.04,
-                font='assets/fonts/SpaceMono-Regular.ttf', color=antennas[1]['color'])
-
-antenna3 = Text(text="3) " + antennas[2]['name'] + " - " + str(antennas[2]['value']), x=0.9, y=-0.15, size=0.04,
-                font='assets/fonts/SpaceMono-Regular.ttf', color=antennas[2]['color'])
-
-antenna4 = Text(text="4) " + antennas[3]['name'] + " - " + str(antennas[3]['value']), x=0.9, y=-0.2, size=0.04,
-                font='assets/fonts/SpaceMono-Regular.ttf', color=antennas[3]['color'])
+# antennas = [{'name': 'WPSA', 'value': 1000, 'color': color.red}, {'name': 'DS54', 'value': 800, 'color': color.blue},
+#             {'name': 'DS24', 'value': 600, 'color': color.green}, {'name': 'DS34', 'value': 400, 'color': color.orange}]
+#
+# antennatitle = Text(text="Antenna priority", x=0.97, y=0, size=0.02, font='assets/fonts/SpaceMono-Regular.ttf')
+#
+# antenna1 = Text(text="1) " + antennas[0]['name'] + " - " + str(antennas[0]['value']), x=0.9, y=-0.05, size=0.04,
+#                 font='assets/fonts/SpaceMono-Regular.ttf', color=antennas[0]['color'])
+#
+# antenna2 = Text(text="2) " + antennas[1]['name'] + " - " + str(antennas[1]['value']), x=0.9, y=-0.1, size=0.04,
+#                 font='assets/fonts/SpaceMono-Regular.ttf', color=antennas[1]['color'])
+#
+# antenna3 = Text(text="3) " + antennas[2]['name'] + " - " + str(antennas[2]['value']), x=0.9, y=-0.15, size=0.04,
+#                 font='assets/fonts/SpaceMono-Regular.ttf', color=antennas[2]['color'])
+#
+# antenna4 = Text(text="4) " + antennas[3]['name'] + " - " + str(antennas[3]['value']), x=0.9, y=-0.2, size=0.04,
+#                 font='assets/fonts/SpaceMono-Regular.ttf', color=antennas[3]['color'])
 
 
 #p_b = Button(icon='playbutton.png', scale=.25, x=0, y=-0.4, color=color.white)
@@ -388,6 +389,13 @@ earth.cull_faces, earth.double_sided = False, True
 moon.cull_faces, moon.double_sided = False, True
 space_bg = Sky(texture="assets/textures-models/space-textures/space4.jpg")
 
+antenna_locations = [
+    (35.3399, -116.875), # California
+    (-35.5985, 148.982), # Australia
+    (40.5276, -4.5271), # Spain
+]
+
+earth_radius = 1.0  # The Earth's radius in your model is 1.0 unit (due to model scaling)
 
 def lat_lon_to_3d(lat, lon, radius):
     """Convert latitude and longitude to 3D coordinates on a sphere."""
@@ -400,27 +408,55 @@ def lat_lon_to_3d(lat, lon, radius):
     return Vec3(x, y, z)
 
 
-def place_marker(lat, lon, radius, color=color.white, scale=0.0005, parent=None, texture=None,
-                 model=load_model('assets/textures-models/antenna-models/DSN_34.obj')):
-    """Place a marker at the specified latitude and longitude on the sphere."""
-    position = lat_lon_to_3d(lat, lon, radius)  # Exact surface position
-    marker = Entity(model=model, scale=scale, parent=parent, color=color, position=position, texture=texture)
-    return marker
+antenna_models = [
+    load_model('assets/textures-models/antenna-stuff/Antenna_model'),
+    load_model('assets/textures-models/antenna-stuff/Antenna_model1'),
+    load_model('assets/textures-models/antenna-stuff/Antenna_model2'),
 
-
-antenna_locations = [
-    (35.3399, -116.875),  # California
-    (-35.5985, 148.982),  # Australia
-    (40.5276, -4.5271),  # Spain
 ]
-antennas = []
-model_number = 0
+
+class marker:
+    def __init__(self, position=(0,0,0), color=color.white, scale=0.0005, parent=None, texture=None, model=load_model('assets/textures-models/antenna-stuff/Antenna_model')):
+        self.pos = position
+        self.color = color
+        self.scale = scale
+        self.parent = parent
+        self.texture = texture
+        self.model = model
+
+    @property
+    def entity(self):
+        entity = Entity(color=self.color, scale=self.scale, parent=self.parent, texture=self.texture, model=self.model, position=self.pos)
+
+        return entity
+
+    def update(self):
+        self.entity.look_at(camera)
+
+position = lat_lon_to_3d(antenna_locations[2][0], antenna_locations[2][1], earth_radius*0.5)
+texture = None
+SpainMarker = marker(model=antenna_models[0], scale=0.001, parent=earth, color=color.red, position=position, texture=texture)
+SpainMarker.entity.show()
+
+position = lat_lon_to_3d(antenna_locations[0][0], antenna_locations[0][1], earth_radius*0.5)
+texture = None
+CAMarker = marker(model=antenna_models[1], scale=0.001, parent=earth, color=color.red, position=position, texture=texture)
+CAMarker.entity.show()
+mouse.locked = True
+
+position = lat_lon_to_3d(antenna_locations[1][0], antenna_locations[1][1], earth_radius*0.5)
+texture = None
+AustraliaMarker = marker(model=antenna_models[1], scale=1, parent=earth, color=color.red, position=position, texture=texture)
+AustraliaMarker.entity.show()
+mouse.locked = True
+
+antennas = [SpainMarker, CAMarker]
+CAMarker.entity.rotate((305,45,15),earth)
+SpainMarker.entity.rotate((385,45,40),earth)
+#AustraliaMarker.entity.rotate()
+model_number = 1
 
 
-for lat, lon in antenna_locations:
-    antennas.append(place_marker(lat, lon, radius=0.5, color=color.white, scale=0.01, parent=earth,
-                 model=antenna_models[model_number]))  # Attach antennas to Earth
-    model_number += 1
 
 
 
