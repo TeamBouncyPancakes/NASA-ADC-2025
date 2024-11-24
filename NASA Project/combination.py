@@ -442,13 +442,13 @@ position = lat_lon_to_3d(antenna_locations[0][0], antenna_locations[0][1], earth
 texture = None
 CAMarker = marker(model=antenna_models[1], scale=0.001, parent=earth, color=color.red, position=position, texture=texture)
 CAMarker.entity.show()
-mouse.locked = True
+
 
 position = lat_lon_to_3d(antenna_locations[1][0], antenna_locations[1][1], earth_radius*0.5)
 texture = None
 AustraliaMarker = marker(model=antenna_models[2], scale=0.001, parent=earth, color=color.red, position=position, texture=texture)
 AustraliaMarker.entity.show()
-mouse.locked = True
+
 
 antennas = [SpainMarker, CAMarker]
 CAMarker.entity.rotate((305,45,15),earth)
