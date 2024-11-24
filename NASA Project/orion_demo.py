@@ -58,12 +58,12 @@ def separate(e1,e2):
 sample_trajectory_points = [Vec3(-3, 0, 0), Vec3(0, 0, 3), Vec3(3, 0, 0), Vec3(0, 0, -3)]
 
 c = 0
-def rotate_vector(vector, angle):
-    """Rotate a vector around the Y-axis by a given angle in degrees."""
-    radians = math.radians(angle)
-    new_x = vector.x * cos(radians) - vector.z * sin(radians)
-    new_z = vector.x * sin(radians) + vector.z * cos(radians)
-    return Vec3(new_x, vector.y, new_z)
+# def rotate_vector(vector, angle):
+#     """Rotate a vector around the Y-axis by a given angle in degrees."""
+#     radians = math.radians(angle)
+#     new_x = vector.x * cos(radians) - vector.z * sin(radians)
+#     new_z = vector.x * sin(radians) + vector.z * cos(radians)
+#     return Vec3(new_x, vector.y, new_z)
 
 def update():
     if held_keys['escape']:
