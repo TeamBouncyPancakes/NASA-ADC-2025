@@ -409,9 +409,9 @@ def lat_lon_to_3d(lat, lon, radius):
 
 
 antenna_models = [
-    load_model('assets/textures-models/antenna-stuff/Antenna_model'),
-    load_model('assets/textures-models/antenna-stuff/Antenna_model1'),
-    load_model('assets/textures-models/antenna-stuff/Antenna_model2'),
+    load_model('assets/textures-models/antenna-models/DSN_34.obj'),
+    load_model('assets/textures-models/antenna-models/DSN_34_1.obj'),
+    load_model('assets/textures-models/antenna-models/DSN_34_2.obj'),
 
 ]
 
@@ -446,14 +446,14 @@ mouse.locked = True
 
 position = lat_lon_to_3d(antenna_locations[1][0], antenna_locations[1][1], earth_radius*0.5)
 texture = None
-AustraliaMarker = marker(model=antenna_models[1], scale=1, parent=earth, color=color.red, position=position, texture=texture)
+AustraliaMarker = marker(model=antenna_models[2], scale=0.001, parent=earth, color=color.red, position=position, texture=texture)
 AustraliaMarker.entity.show()
 mouse.locked = True
 
 antennas = [SpainMarker, CAMarker]
 CAMarker.entity.rotate((305,45,15),earth)
 SpainMarker.entity.rotate((385,45,40),earth)
-#AustraliaMarker.entity.rotate()
+AustraliaMarker.entity.rotate((310,200,90), earth)
 model_number = 1
 
 
