@@ -1,6 +1,11 @@
 import numpy as np
-import pandas as pd
 from ursina import *
+import pandas as pd
+import time
+from panda3d.core import FrameBufferProperties
+# Renamed to avoid conflict with Ursina's Texture
+from panda3d.core import Texture as p3dTexture
+from csv_funcs import *
 
 app = Ursina(size=(1000, 500))
 
@@ -270,6 +275,152 @@ ui_visible = False
 inter = 0.75
 
 
+
+class Planet:
+    def __init__(self, scale, file, pos=(0, 0, 0)):
+        self.entity = Entity(model="sphere", texture=file, scale=(scale, scale, scale), position=pos)
+
+
+earth = Planet(12742 * scale_factor, "assets/textures-models/planet-textures/earth.jpg").entity
+moon = Planet(3474 * scale_factor, "assets/textures-models/planet-textures/moon.jpg",
+              pos=((-384400 * scale_factor) + 1, -16.25, -8)).entity
+earth.cull_faces, earth.double_sided = False, True
+moon.cull_faces, moon.double_sided = False, True
+space_bg = Sky(texture="assets/textures-models/space-textures/space4.jpg")
+
+antenna_locations = [
+    (35.3399, -116.875), # California
+    (-35.5985, 148.982), # Australia
+    (40.5276, -4.5271), # Spain
+]
+
+earth_radius = 1.0  # The Earth's radius in your model is 1.0 unit (due to model scaling)
+
+def lat_lon_to_3d(lat, lon, radius):
+    """Convert latitude and longitude to 3D coordinates on a sphere."""
+    lat_rad = math.radians(lat)
+    lon_rad = math.radians(lon)
+
+    x = radius * math.cos(lat_rad) * math.cos(lon_rad)
+    y = radius * math.sin(lat_rad)
+    z = radius * math.cos(lat_rad) * math.sin(lon_rad)
+    return Vec3(x, y, z)
+
+
+antenna_models = [
+    load_model('assets/textures-models/antenna-models/DSN_34.obj'),
+    load_model('assets/textures-models/antenna-models/DSN_34_1.obj'),
+    load_model('assets/textures-models/antenna-models/DSN_34_2.obj'),
+
+]
+
+class marker:
+    def __init__(self, position=(0,0,0), color=color.white, scale=0.0005, parent=None, texture=None, model=load_model('assets/textures-models/antenna-stuff/Antenna_model')):
+        self.pos = position
+        self.color = color
+        self.scale = scale
+        self.parent = parent
+        self.texture = texture
+        self.model = model
+
+    @property
+    def entity(self):
+        entity = Entity(color=self.color, scale=self.scale, parent=self.parent, texture=self.texture, model=self.model, position=self.pos)
+
+        return entity
+
+    def update(self):
+        self.entity.look_at(camera)
+
+position = lat_lon_to_3d(antenna_locations[2][0], antenna_locations[2][1], earth_radius*0.5)
+texture = None
+SpainMarker = marker(model=antenna_models[0], scale=0.001, parent=earth, color=color.red, position=position, texture=texture)
+SpainMarker.entity.show()
+
+position = lat_lon_to_3d(antenna_locations[0][0], antenna_locations[0][1], earth_radius*0.5)
+texture = None
+CAMarker = marker(model=antenna_models[1], scale=0.001, parent=earth, color=color.red, position=position, texture=texture)
+CAMarker.entity.show()
+
+
+position = lat_lon_to_3d(antenna_locations[1][0], antenna_locations[1][1], earth_radius*0.5)
+texture = None
+AustraliaMarker = marker(model=antenna_models[2], scale=0.001, parent=earth, color=color.red, position=position, texture=texture)
+AustraliaMarker.entity.show()
+
+
+antennas = [SpainMarker, CAMarker]
+CAMarker.entity.rotate((305,45,15),earth)
+SpainMarker.entity.rotate((385,45,40),earth)
+AustraliaMarker.entity.rotate((310,200,90), earth)
+model_number = 1
+
+
+# Specify what type of buffer we want.
+properties = FrameBufferProperties()
+properties.set_rgb_color(True)
+properties.set_rgba_bits(80, 8, 8, 8)
+properties.set_depth_bits(12)
+# Setup the texture to be rendered into.
+render_texture = p3dTexture()
+render_texture.set_format(p3dTexture.F_rgba32)
+# render_texture.set_component_type(p3dTexture.T_float)
+# Make the buffer, if size is set to (0, 0), then it matches the window size.
+render_buffer = app.win.make_texture_buffer('render', 512, 2048, render_texture, False, properties)
+# Determines in what order rendering happens, you can pick any integer, see Panda3D render ordering.
+# Negative means before the rest of the normal scene is drawn.
+render_buffer.set_sort(-100)
+
+camera_pos = Entity(model="cube", position=(0, 10, 0), color=color.olive)
+# New camera that copies the lens from the Ursina default camera,
+# and is rendering scene (all Ursina entities are attached to scene by default).
+render_camera = app.make_camera(render_buffer, lens=camera.lens, scene=scene)
+# render_camera.NodePath.
+# Make it follow Ursina's camera.
+render_camera.reparentTo(camera_pos)
+# To display the results of the render texture.
+tex = Texture(render_texture)
+
+outline = Entity(model="quad", parent=camera.ui, scale=0.41, texture="assets/minimap-stuffs/outline-bg.jpg  ",
+                 position=(0, 2, 0))
+
+minimapbg = Entity(model="quad", parent=camera.ui, scale=0.4, texture="assets/textures-models/space-textures/space4.jpg",
+            position=(0, 2, 0))
+
+quad = Entity(model='quad', texture=tex, parent=camera.ui, scale=0.4)
+minimapbg.always_on_top = True
+# bg.always_on_top = False
+quad.always_on_top = True
+
+
+ui_objs = [logo, viewer_button, quit_button, play_button, viewer_text, play_text, quit_text, subtitle, menu_text, bg]
+non_ui = [trajectory_line, earth, moon, space_bg, model, quad, minimapbg]
+for antenna in antennas:
+    non_ui.append(antenna)
+
+model_number = 0
+
+def ui_on(manual=False):
+    global ui_visible
+    for obj in non_ui:
+        obj.visible = False
+    for ui in ui_objs:
+        ui.visible = True
+    ui_visible = True
+    print("UI on") if not manual else print("FORCE BUTTON UI ON")
+
+
+def ui_off(manual=False):
+    global ui_visible
+    for obj in non_ui:
+        obj.visible = True
+    for ui in ui_objs:
+        ui.visible = False
+    ui_visible = False
+    print("UI off") if not manual else print("FORCE BUTTON UI OFF")
+
+ui_on()
+
 def update():
     if held_keys['q']:
         app.quit()
@@ -376,120 +527,38 @@ def update():
         current = [points[0], points[1]]
         scene.clear()
 
+    global n
+    n += 1
+    # bg_for_circle_identifier.x = window.top_left.x + bg_for_circle_identifier.scale.x * 0.5
+    # bg_for_circle_identifier.y = window.top_left.y - bg_for_circle_identifier.scale.y * 0.5
+    #
+    # prioritization_circle_identifier.x = window.top_left.x + prioritization_circle_identifier.scale.x * 0.5
+    # prioritization_circle_identifier.y = window.top_left.y - prioritization_circle_identifier.scale.y * 0.5
+    quad.x = window.bottom_right.x - quad.scale.x * 0.5
+    quad.y = window.bottom_right.y + quad.scale.y * 0.5
+    bg.x = window.bottom_right.x - bg.scale.x * 0.5
+    bg.y = window.bottom_right.y + bg.scale.y * 0.5
+    outline.x = window.bottom_right.x - outline.scale.x * 0.5
+    outline.y = window.bottom_right.y + outline.scale.y * 0.5
 
-class Planet:
-    def __init__(self, scale, file, pos=(0, 0, 0)):
-        self.entity = Entity(model="sphere", texture=file, scale=(scale, scale, scale), position=pos)
+    none_active = "None active"
+    assets_prefix = "assets/antenna-prioritization/"
+    neutral_png = assets_prefix + "neutral.png"
 
-
-earth = Planet(12742 * scale_factor, "assets/textures-models/planet-textures/earth.jpg").entity
-moon = Planet(3474 * scale_factor, "assets/textures-models/planet-textures/moon.jpg",
-              pos=((-384400 * scale_factor) + 1, -16.25, -8)).entity
-earth.cull_faces, earth.double_sided = False, True
-moon.cull_faces, moon.double_sided = False, True
-space_bg = Sky(texture="assets/textures-models/space-textures/space4.jpg")
-
-antenna_locations = [
-    (35.3399, -116.875), # California
-    (-35.5985, 148.982), # Australia
-    (40.5276, -4.5271), # Spain
-]
-
-earth_radius = 1.0  # The Earth's radius in your model is 1.0 unit (due to model scaling)
-
-def lat_lon_to_3d(lat, lon, radius):
-    """Convert latitude and longitude to 3D coordinates on a sphere."""
-    lat_rad = math.radians(lat)
-    lon_rad = math.radians(lon)
-
-    x = radius * math.cos(lat_rad) * math.cos(lon_rad)
-    y = radius * math.sin(lat_rad)
-    z = radius * math.cos(lat_rad) * math.sin(lon_rad)
-    return Vec3(x, y, z)
-
-
-antenna_models = [
-    load_model('assets/textures-models/antenna-models/DSN_34.obj'),
-    load_model('assets/textures-models/antenna-models/DSN_34_1.obj'),
-    load_model('assets/textures-models/antenna-models/DSN_34_2.obj'),
-
-]
-
-class marker:
-    def __init__(self, position=(0,0,0), color=color.white, scale=0.0005, parent=None, texture=None, model=load_model('assets/textures-models/antenna-stuff/Antenna_model')):
-        self.pos = position
-        self.color = color
-        self.scale = scale
-        self.parent = parent
-        self.texture = texture
-        self.model = model
-
-    @property
-    def entity(self):
-        entity = Entity(color=self.color, scale=self.scale, parent=self.parent, texture=self.texture, model=self.model, position=self.pos)
-
-        return entity
-
-    def update(self):
-        self.entity.look_at(camera)
-
-position = lat_lon_to_3d(antenna_locations[2][0], antenna_locations[2][1], earth_radius*0.5)
-texture = None
-SpainMarker = marker(model=antenna_models[0], scale=0.001, parent=earth, color=color.red, position=position, texture=texture)
-SpainMarker.entity.show()
-
-position = lat_lon_to_3d(antenna_locations[0][0], antenna_locations[0][1], earth_radius*0.5)
-texture = None
-CAMarker = marker(model=antenna_models[1], scale=0.001, parent=earth, color=color.red, position=position, texture=texture)
-CAMarker.entity.show()
-
-
-position = lat_lon_to_3d(antenna_locations[1][0], antenna_locations[1][1], earth_radius*0.5)
-texture = None
-AustraliaMarker = marker(model=antenna_models[2], scale=0.001, parent=earth, color=color.red, position=position, texture=texture)
-AustraliaMarker.entity.show()
-
-
-antennas = [SpainMarker, CAMarker]
-CAMarker.entity.rotate((305,45,15),earth)
-SpainMarker.entity.rotate((385,45,40),earth)
-AustraliaMarker.entity.rotate((310,200,90), earth)
-model_number = 1
-
-
-
-
-
-ui_objs = [logo, viewer_button, quit_button, play_button, viewer_text, play_text, quit_text, subtitle, menu_text, bg]
-non_ui = [trajectory_line, earth, moon, space_bg, model]
-for antenna in antennas:
-    non_ui.append(antenna)
-
-model_number = 0
-
-def ui_on(manual=False):
-    global ui_visible
-    for obj in non_ui:
-        obj.visible = False
-    for ui in ui_objs:
-        ui.visible = True
-    ui_visible = True
-    print("UI on") if not manual else print("FORCE BUTTON UI ON")
-
-
-def ui_off(manual=False):
-    global ui_visible
-    for obj in non_ui:
-        obj.visible = True
-    for ui in ui_objs:
-        ui.visible = False
-    ui_visible = False
-    print("UI off") if not manual else print("FORCE BUTTON UI OFF")
-
-ui_on()
-
+    # if not toggle:
+    #     if csv_to_antenna(n) != none_active:
+    #         prioritization_circle_identifier.texture = str(assets_prefix + str(csv_to_antenna(n)) + ".png")
+    #     else:
+    #         prioritization_circle_identifier.texture = neutral_png
+    # else:
+    #     should_look = look_forwards(10, n)
+    #     if should_look != none_active:
+    #         prioritization_circle_identifier.texture = str(assets_prefix + str(should_look) + ".png")
+    #     else:
+    #         prioritization_circle_identifier.texture = neutral_png
 
 def start():
     app.run()
+n = 0
 
 start()
