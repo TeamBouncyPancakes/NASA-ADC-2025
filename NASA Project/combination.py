@@ -292,6 +292,7 @@ antenna_locations = [
     (35.3399, -116.875), # California
     (-35.5985, 148.982), # Australia
     (40.5276, -4.5271), # Spain
+    (32.7804, 106.5364)
 ]
 
 earth_radius = 1.0  # The Earth's radius in your model is 1.0 unit (due to model scaling)
@@ -311,6 +312,7 @@ antenna_models = [
     load_model('assets/textures-models/antenna-models/DSN_34.obj'),
     load_model('assets/textures-models/antenna-models/DSN_34_1.obj'),
     load_model('assets/textures-models/antenna-models/DSN_34_2.obj'),
+    load_model('assets/textures-models/antenna-models/DSN_34_3.obj'),
 
 ]
 
@@ -348,11 +350,17 @@ texture = None
 AustraliaMarker = marker(model=antenna_models[2], scale=0.001, parent=earth, color=color.red, position=position, texture=texture)
 AustraliaMarker.entity.show()
 
+position = lat_lon_to_3d(antenna_locations[3][0], antenna_locations[3][1], earth_radius*0.5)
+texture = None
+WPSA = marker(model=antenna_models[3], scale=0.001, parent=earth, color=color.red, position=position, texture=texture)
+WPSA.entity.show()
 
-antennas = [SpainMarker, CAMarker]
+
+antennas = [SpainMarker, CAMarker, AustraliaMarker, WPSA]
 CAMarker.entity.rotate((305,45,15),earth)
 SpainMarker.entity.rotate((385,45,40),earth)
 AustraliaMarker.entity.rotate((310,200,90), earth)
+WPSA.entity.rotate((45,300,30), earth)
 model_number = 1
 
 
@@ -364,7 +372,7 @@ properties.set_depth_bits(12)
 # Setup the texture to be rendered into.
 render_texture = p3dTexture()
 render_texture.set_format(p3dTexture.F_rgba32)
-# render_texture.set_component_type(p3dTexture.T_float)
+render_texture.set_component_type(p3dTexture.T_float)
 # Make the buffer, if size is set to (0, 0), then it matches the window size.
 render_buffer = app.win.make_texture_buffer('render', 512, 2048, render_texture, False, properties)
 # Determines in what order rendering happens, you can pick any integer, see Panda3D render ordering.
@@ -376,7 +384,6 @@ camera_pos = Entity(model="cube", position=(0, 10, 0), color=color.olive)
 # and is rendering scene (all Ursina entities are attached to scene by default).
 render_camera = app.make_camera(render_buffer, lens=camera.lens, scene=scene)
 # render_camera.NodePath.
-# Make it follow Ursina's camera.
 render_camera.reparentTo(camera_pos)
 # To display the results of the render texture.
 tex = Texture(render_texture)
@@ -393,8 +400,8 @@ minimapbg.always_on_top = True
 quad.always_on_top = True
 
 
-ui_objs = [logo, viewer_button, quit_button, play_button, viewer_text, play_text, quit_text, subtitle, menu_text, bg]
-non_ui = [trajectory_line, earth, moon, space_bg, model, quad, minimapbg]
+ui_objs = [logo, viewer_button, quit_button, play_button, viewer_text, play_text, quit_text, subtitle, menu_text, bg, quad, minimapbg]
+non_ui = [trajectory_line, earth, moon, space_bg, model]
 for antenna in antennas:
     non_ui.append(antenna)
 
