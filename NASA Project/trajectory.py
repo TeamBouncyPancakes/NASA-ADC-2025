@@ -9,34 +9,26 @@ x_velocity = ms_data['Vx(km/s)[J2000-EARTH]'].to_numpy()
 y_velocity = ms_data['Vy(km/s)[J2000-EARTH]'].to_numpy()
 z_velocity = ms_data['Vz(km/s)[J2000-EARTH]'].to_numpy()
 
-times = ms_data['MISSION ELAPSED TIME (mins)'].to_numpy()
-
 test = np.array(x_velocity**2 + y_velocity**2 + z_velocity**2)
 
 overall_velocity = np.array(np.sqrt(test))
+scale_factor = 0.000125
 
-colors = [color.red,color.white,color.green,color.orange,color.pink,color.yellow,color.blue]
-
-
-ci = 0
 
 def create_trajectory_line():
-    global ci
-    scale_factor = 0.000125
     points = [Vec3(x,y,z) * scale_factor for x, y, z in zip(ms_data['Rx(km)[J2000-EARTH]'],ms_data['Ry(km)[J2000-EARTH]'],ms_data['Rz(km)[J2000-EARTH]'])]
-    current = [points[0],points[1]]
-    line = Entity(model=Mesh(vertices=current, mode='line', thickness=2), color=colors[ci])
-    return points, line, current
 
-app = Ursina(size=(2500,1000))
+    line = Entity(model=Mesh(vertices=points, mode='line', thickness=2), color=color.red)
+    return points, line
 
-model = Entity(model='sphere', scale = (1,1,1),color=color.green)
+app = Ursina(size=(1000,500))
 
+model = Entity(model='assets/textures-models/orion-models/orion3.obj', scale=(1, 1, 1), color=color.light_gray)
 
 
 index = 1
 
-points, trajectory_line, current = create_trajectory_line()
+points, trajectory_line = create_trajectory_line()
 
 
 editor_camera = EditorCamera(pan_speed = 1000)
@@ -158,6 +150,15 @@ def update():
         distance = 0
         current = [points[0],points[1]]
         
+
+class Planet:
+    def __init__(self, scale, file, pos=(0, 0, 0)):
+        self.entity = Entity(model="sphere", texture=file, scale=(scale, scale, scale), position=pos)
+earth = Planet(2, "assets/textures-models/planet-textures/earth.jpg").entity
+moon = Planet(0.54, "assets/textures-models/planet-textures/moon.jpg", pos=(-384400 * scale_factor, -17, -5)).entity
+earth.cull_faces, earth.double_sided = False, True
+moon.cull_faces, moon.double_sided = False, True
+space_bg = Sky(texture="assets/textures-models/space-textures/space4.jpg")
 
 
 app.run()
