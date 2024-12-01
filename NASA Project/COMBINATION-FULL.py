@@ -292,7 +292,7 @@ antenna_locations = [
     (35.3399, -116.875), # California
     (-35.5985, 148.982), # Australia
     (40.5276, -4.5271), # Spain
-    (32.7804, 106.5364)
+    (106.5364, 32.7804)
 ]
 
 earth_radius = 1.0  # The Earth's radius in your model is 1.0 unit (due to model scaling)
@@ -363,8 +363,6 @@ AustraliaMarker.entity.rotate((310,200,90), earth)
 WPSA.entity.rotate((45,300,30), earth)
 model_number = 1
 
-
-# Specify what type of buffer we want.
 properties = FrameBufferProperties()
 properties.set_rgb_color(True)
 properties.set_rgba_bits(80, 8, 8, 8)
@@ -380,22 +378,22 @@ render_buffer = app.win.make_texture_buffer('render', 512, 2048, render_texture,
 render_buffer.set_sort(-100)
 
 camera_pos = Entity(model="cube", position=(0, 10, 0), color=color.olive)
+camera_pos.hide()
 # New camera that copies the lens from the Ursina default camera,
 # and is rendering scene (all Ursina entities are attached to scene by default).
 render_camera = app.make_camera(render_buffer, lens=camera.lens, scene=scene)
 # render_camera.NodePath.
 render_camera.reparentTo(camera_pos)
 # To display the results of the render texture.
-tex = Texture(render_texture)
+minimap_texture = Texture(render_texture)
 
-outline = Entity(model="quad", parent=camera.ui, scale=0.41, texture="assets/minimap-stuffs/outline-bg.jpg  ",
+outline = Entity(model="quad", parent=camera.ui, scale=0.41, texture="assets/minimap-stuffs/outline-bg.jpg",
                  position=(0, 2, 0))
 
 minimapbg = Entity(model="quad", parent=camera.ui, scale=0.4, texture="assets/textures-models/space-textures/space4.jpg",
             position=(0, 2, 0))
 
-quad = Entity(model='quad', texture=tex, parent=camera.ui, scale=0.4)
-minimapbg.always_on_top = True
+quad = Entity(model='quad', texture=minimap_texture, parent=camera.ui, scale=0.4)
 # bg.always_on_top = False
 quad.always_on_top = True
 
@@ -508,6 +506,8 @@ def update():
         if point_index + 1 != len(points):
             a = Mesh(vertices=current, mode='line', thickness=2)
             trajectory_line.model = a
+#        else:
+#            point_index = 0
         #  trajectory_line.alpha = 0
         distancetotal.text = str(distance)
         timelabel.text = str(float(times[point_index]))

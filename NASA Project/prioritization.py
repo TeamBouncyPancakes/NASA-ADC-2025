@@ -21,7 +21,7 @@ box = Entity(model='cube')
 
 # ed = EditorCamera()
 
-toggle = True
+toggle = False
 
 
 
@@ -102,12 +102,14 @@ antenna_locations = [
     (35.3399, -116.875),  # California
     (-35.5985, 148.982),  # Australia
     (40.5276, -4.5271),  # Spain
+    (32.7804, 106.5364)
 ]
 
 antenna_models = [
     load_model('assets/textures-models/antenna-models/DSN_34.obj'),
     load_model('assets/textures-models/antenna-models/DSN_34_1.obj'),
     load_model('assets/textures-models/antenna-models/DSN_34_2.obj'),
+    load_model('assets/textures-models/antenna-models/DSN_34_3.obj'),
 
 ]
 
@@ -128,10 +130,16 @@ AustraliaMarker = marker(model=antenna_models[2], scale=0.001, parent=earth, col
 AustraliaMarker.entity.show()
 mouse.locked = True
 
-antennas = [SpainMarker, CAMarker]
+position = lat_lon_to_3d(antenna_locations[3][0], antenna_locations[3][1], earth_radius*0.5)
+texture = None
+WPSA = marker(model=antenna_models[3], scale=0.001, parent=earth, color=color.red, position=position, texture=texture)
+WPSA.entity.show()
+
+antennas = [SpainMarker, CAMarker, AustraliaMarker, WPSA]
 CAMarker.entity.rotate((305,45,15),earth)
 SpainMarker.entity.rotate((385,45,40),earth)
 AustraliaMarker.entity.rotate((310,200,90), earth)
+WPSA.entity.rotate((45,300,30), earth)
 model_number = 1
 
 player = FirstPersonController(gravity=0)
@@ -163,7 +171,7 @@ render_camera.reparentTo(camera_pos)
 # To display the results of the render texture.
 tex = Texture(render_texture)
 
-outline = Entity(model="quad", parent=camera.ui, scale=0.41, texture="assets/minimap-stuffs/outline-bg.jpg  ",
+outline = Entity(model="quad", parent=camera.ui, scale=0.41, texture="assets/minimap-stuffs/outline-bg.jpg",
                  position=(0, 2, 0))
 
 bg = Entity(model="quad", parent=camera.ui, scale=0.4, texture="assets/textures-models/space-textures/space4.jpg",
