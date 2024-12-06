@@ -559,7 +559,8 @@ def update():
         # print(ci)
         inter += speed * time.dt
         time.sleep(h)
-        point_index += int(speed * len(points) / 5.3)
+        if not ui_visible:
+         point_index += int(speed * len(points) / 5.3)
         # point_index += int(speed*len(points)/5.301)
 
         if inter >= 1.0:
