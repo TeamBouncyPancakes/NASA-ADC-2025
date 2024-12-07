@@ -345,14 +345,16 @@ def lat_lon_to_3d(lat, lon, radius):
     z = radius * math.cos(lat_rad) * math.sin(lon_rad)
     return Vec3(x, y, z)
 
+try:
+    antenna_models = [
+        load_model('assets/textures-models/antenna-models/DSN_34.obj'),
+        load_model('assets/textures-models/antenna-models/DSN_34_1.obj'),
+        load_model('assets/textures-models/antenna-models/DSN_34_2.obj'),
+        load_model('assets/textures-models/antenna-models/DSN_34_3.obj'),
 
-antenna_models = [
-    load_model('assets/textures-models/antenna-models/DSN_34.obj'),
-    load_model('assets/textures-models/antenna-models/DSN_34_1.obj'),
-    load_model('assets/textures-models/antenna-models/DSN_34_2.obj'),
-    load_model('assets/textures-models/antenna-models/DSN_34_3.obj'),
-
-]
+    ]
+except Exception as e:
+    print(f"Error loading model: {e}")
 
 class marker:
     def __init__(self, position=(0,0,0), color=color.white, scale=0.0005, parent=None, texture=None, model=load_model('assets/textures-models/antenna-stuff/Antenna_model')):
