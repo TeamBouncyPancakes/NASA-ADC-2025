@@ -139,31 +139,16 @@ def create_trajectory_line(c, x, y):
     # Create a line entity using the two points
     vertices = current  # Start and end points for the line
     line = Entity(
-        model=Mesh(vertices=vertices, mode='line'),  # Create a line model
-        color=c,
-        scale=scale_factor  # Optional scaling
+        model=Mesh(vertices=vertices, mode='line', thickness=2),  # Create a line model
+        color=c, # Optional scaling
     )
 
-    print('Drew line.')
+    # print('Drew line.')
 
     return line, current
 
 
 
-service_module = Entity(model='assets/textures-models/orion-models/orion_service_module.obj', scale=(1, 1, 1),
-                        color=color.light_gray)
-model = Entity(model='assets/textures-models/orion-models/orion_capsule_new.obj', scale=(1, 1, 1),
-                 color=color.light_gray)
-capsule = model
-
-capsule_entity = Entity(model=capsule, position=(0, 0, 0))
-service_module_entity = Entity(model=service_module, scale=1, position=(0, 1.2, 0))
-
-orion = Entity(scale=(0.3, 0.3, 0.3))
-orion.position = (0, 0, 0)
-
-capsule_entity.parent = orion
-service_module_entity.parent = orion
 
 index = 1
 
@@ -172,98 +157,111 @@ trajectory_line, current = create_trajectory_line(colors[ci], 0, 1)
 editor_camera = EditorCamera(pan_speed=1000)
 # app.run()
 
-camera.fov = 155
+
 
 point_index = 0
 overall_velocity = overall_velocity * 0.001
 speed = overall_velocity[0]
 distance = 0
-phase = "Launch"
+phase = "None"
 
-distanceup = Text(text="Distance Travelled (km):", x=-1.2, y=0.37, size=0.02, font='assets/fonts/SpaceMono-Regular.ttf')
-distancetotal = Text(text=str(distance), x=-1.2, y=0.33, size=0.04, font='assets/fonts/SpaceMono-Regular.ttf')
+distanceup = Text(text="Distance Travelled (km):", x=-0.97, y=0.37, size=0.02, font='assets/fonts/SpaceMono-Regular.ttf')
+distancetotal = Text(text=str(distance), x=-0.97, y=0.33, size=0.04, font='assets/fonts/SpaceMono-Regular.ttf')
 distancetotal._eternal = True
 distanceup._eternal = True
 
-phaseup = Text(text='Phase:', x=-1.2, y=0.47, size=0.02, font='assets/fonts/SpaceMono-Regular.ttf')
-phaselabel = Text(text=phase, x=-1.2, y=0.43, size=0.04, font='assets/fonts/SpaceMono-Regular.ttf')
+distanceup.alpha = 0
+distancetotal.alpha = 0
+
+phaseup = Text(text='Phase:', x=-0.97, y=0.47, size=0.02, font='assets/fonts/SpaceMono-Regular.ttf')
+phaselabel = Text(text=phase, x=-0.97, y=0.43, size=0.04, font='assets/fonts/SpaceMono-Regular.ttf')
 phaselabel._eternal = True
 phaseup._eternal = True
 
-timeup = Text(text="Time (min):", x=-1.2, y=0.27, size=0.02, font='assets/fonts/SpaceMono-Regular.ttf')
-timelabel = Text(text=str(times[0]), x=-1.2, y=0.23, font='assets/fonts/SpaceMono-Regular.ttf', size=0.04)
+phaseup.alpha = 0
+phaselabel.alpha = 0
+
+timeup = Text(text="Time (min):", x=-0.97, y=0.27, size=0.02, font='assets/fonts/SpaceMono-Regular.ttf')
+timelabel = Text(text=str(times[0]), x=-0.97, y=0.23, font='assets/fonts/SpaceMono-Regular.ttf', size=0.04)
 timelabel._eternal = True
 timeup._eternal = True
 
-wh = Entity(model = 'quad',color=color.white,scale=(10.5,9),position=(-69,10,5))
+timeup.alpha = 0
+timelabel.alpha = 0
 
+wh = Entity(model = 'quad',color=color.white,scale=(0.1,0.1),position=(-0.6,0.1), parent=camera.ui)
 
+wh.alpha = 0
 
 key1 = Text(text="Color Key (Phases):",x=-0.97,y=0.15,size=0.02,font='assets/fonts/SpaceMono-Regular.ttf')
 
-key2a = Text(text="Launch:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
-key2b = Entity(model='quad',color=color.red,scale = (6,6),position=(-55,8,0))
+key1.alpha = 0
 
-key2a.alpha = 1
-key2b.alpha = 1
+key2a = Text(text="Launch:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
+key2b = Entity(model='quad',color=color.red,scale = (0.075,0.075),position=(-0.6,0.1), parent=camera.ui)
+
+key2a.alpha = 0
+key2b.alpha = 0
 
 key3a = Text(text="Initital Firing:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
-key3b = Entity(model='quad',color=color.cyan,scale = (6,6),position=(-55,8,0))
+key3b = Entity(model='quad',color=color.cyan,scale = (0.075,0.075),position=(-0.6,0.1), parent=camera.ui)
 
 
 key3a.alpha = 0
 key3b.alpha = 0
 
 key4a = Text(text="Orion Separation:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
-key4b = Entity(model='quad',color=color.green,scale = (6,6),position=(-55,8,0))
+key4b = Entity(model='quad',color=color.green,scale = (0.075,0.075),position=(-0.6,0.1), parent=camera.ui)
 
 key4a.alpha = 0
 key4b.alpha = 0
 
 key5a = Text(text="Subsequent Burning:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
-key5b = Entity(model='quad',color=color.gold,scale = (6,6),position=(-55,8,0))
+key5b = Entity(model='quad',color=color.gold,scale = (0.075,0.075),position=(-0.6,0.1), parent=camera.ui)
 
 key5a.alpha = 0
 key5b.alpha = 0
 
 key6a = Text(text="Life Systems Check:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
-key6b = Entity(model='quad',color=color.pink,scale = (6,6),position=(-55,8,0))
+key6b = Entity(model='quad',color=color.pink,scale = (0.075,0.075),position=(-0.6,0.1), parent=camera.ui)
 
 key6a.alpha = 0
 key6b.alpha = 0
 
 key7a = Text(text="Burn Fuel:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
-key7b = Entity(model='quad',color=color.yellow,scale = (6,6),position=(-55,8,0))
+key7b = Entity(model='quad',color=color.yellow,scale = (0.075,0.075),position=(-0.6,0.1), parent=camera.ui)
 
 key7a.alpha = 0
 key7b.alpha = 0
 
 key8a = Text(text="Translunar Injection:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.02)
-key8b = Entity(model='quad',color=color.orange,position=(-55,8,0),scale = (6,6))
+key8b = Entity(model='quad',color=color.orange,position=(-0.6,0.1),scale = (0.075,0.075), parent=camera.ui)
 
 key8a.alpha = 0
 key8b.alpha = 0
 
 key9a = Text(text="Translunar Outbound:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
-key9b = Entity(model='quad',color=color.brown,scale = (6,6),position=(-55,8,0))
+key9b = Entity(model='quad',color=color.brown,scale = (0.075,0.075),position=(-0.6,0.1), parent=camera.ui)
 
 
 key9a.alpha = 0
 key9b.alpha = 0
 
 key0a = Text(text="Return:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
-key0b = Entity(model='quad',color=color.azure,scale = (6,6),position=(-55,8,0))
+key0b = Entity(model='quad',color=color.azure,scale = (0.075,0.075),position=(-0.6,0.1), parent=camera.ui)
 
 
 key0a.alpha = 0
 key0b.alpha = 0
 
 key15a = Text(text="Landing:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
-key15b = Entity(model='quad',color=color.lime,scale = (6,6),position=(-55,8,0))
+key15b = Entity(model='quad',color=color.lime,scale = (0.075,0.075),position=(-0.6,0.1), parent=camera.ui)
 
 
 key15a.alpha = 0
 key15b.alpha = 0
+
+keys = {key2a:key2b,key3a:key3b,key4a:key4b,key5a:key5b,key6a:key6b,key7a:key7b,key8a:key8b,key9a:key9b,key0a:key0b,key15a:key15b}
 
 ## POSSIBLE USE FOR DEBUG
 # xlabel = Text(text="X: "+str(points[0][0]/0.000125),x=-0.75,y=0.47)
@@ -375,6 +373,9 @@ antenna_models = [
 
 ]
 
+camera.fov = 100
+
+
 class marker:
     def __init__(self, position=(0,0,0), color=color.white, scale=0.0005, parent=None, texture=None, model=load_model('assets/textures-models/antenna-stuff/Antenna_model')):
         self.pos = position
@@ -458,7 +459,7 @@ quad.always_on_top = True
 
 
 ui_objs = [logo, viewer_button, quit_button, play_button, viewer_text, play_text, quit_text, subtitle, menu_text, bg, quad, minimapbg]
-non_ui = [trajectory_line, earth, moon, space_bg, model]
+non_ui = [trajectory_line, earth, moon, space_bg]
 for antenna in antennas:
     non_ui.append(antenna)
 
@@ -472,7 +473,7 @@ def ui_on(manual=False):
     for ui in ui_objs:
         ui.visible = True
     ui_visible = True
-    print("UI on") if not manual else print("FORCE BUTTON UI ON")
+    # print("UI on") if not manual else print("FORCE BUTTON UI ON")
 
 
 def ui_off(manual=False):
@@ -482,14 +483,95 @@ def ui_off(manual=False):
     for ui in ui_objs:
         ui.visible = False
     ui_visible = False
-    print("UI off") if not manual else print("FORCE BUTTON UI OFF")
+    # print("UI off") if not manual else print("FORCE BUTTON UI OFF")
 
 ui_on()
 
-def update():
-    if held_keys['q']:
-        app.quit()
 
+# loading orion modules
+slsbody = load_model('assets/textures-models/orion-models/orion_nasa_sls_body.glb')
+slsbody_entity = Entity(model = slsbody, scale = (0.12,0.12,0.12))
+slsbody_entity.rotation_z = 180
+slsbody_entity.y = 0.45
+slsnose = load_model('assets/textures-models/orion-models/orionmpcv.glb')
+slsnose_entity = Entity(model = slsnose, scale = (0.12,0.12,0.12))
+slsnose_entity.y = 10
+icps = load_model('assets/textures-models/orion-models/icpstextured.glb')
+service_module = load_model('assets/textures-models/orion-models/servicemoduletextured.glb')
+capsule = load_model('assets/textures-models/orion-models/orioncapsuletextured.glb')
+capsule_entity = Entity(model=capsule, position=(-1.7,3.21,-0.18))
+service_module_entity = Entity(model=service_module, scale = 1, position=(-3.5,1.2,0))
+orion = Entity(scale = (0.2,0.2,0.2))
+orion.position=(0, 0, 0)
+capsule_entity.parent = orion
+service_module_entity.parent = orion
+icps_entity = Entity(model=icps, scale=0.008, position = (-0.33,0.3,0))
+icps_entity.rotation_x = -90
+orion_maste = Entity(scale = (1,1,1))
+icps_entity.parent = orion_maste
+orion.parent = orion_maste
+# sls.parent = orion_maste   
+orion_maste.y = 9.8
+orion_maste.x = 0.33
+g_scale =0.2
+orion_master = Entity(scale = (g_scale,g_scale,g_scale))
+slsbody_entity.parent = orion_master
+slsnose_entity.parent = orion_master
+orion_maste.parent = orion_master
+# orion_master.z = -0.5
+slsbody_entity.rotation_y = 90
+orion_master.rotation_z = -90
+light = DirectionalLight(parent=orion_master)
+light.look_at(orion_master)
+
+def median_filter(points, window_size=3):
+    smoothed_points = []
+    for i in range(len(points)):
+        # Define the window range: from max(0, i - window_size//2) to min(len(points), i + window_size//2)999
+        start = max(0, i - window_size // 2)
+        end = min(len(points), i + window_size // 2 + 1)
+        
+        # Extract the window of points
+        window = points[start:end]
+        
+        # Apply median filter to each dimension (x, y, z)
+        window_x = [p[0] for p in window]
+        window_y = [p[1] for p in window]
+        window_z = [p[2] for p in window]
+        
+        # Calculate the median for each dimension
+        median_x = np.median(window_x)
+        median_y = np.median(window_y)
+        median_z = np.median(window_z)
+        
+        # Create a new smoothed point using the median values
+        smoothed_point = Vec3(median_x, median_y, median_z)
+        smoothed_points.append(smoothed_point)
+    
+    return smoothed_points
+
+points_array = median_filter(points, 30)
+
+#points = points_array
+
+def separate(e1,e2):
+        e1.parent = None
+        e2.parent = None
+
+def translate_orion(e , x , y , z):
+     e.x += x
+     e.y += y
+     e.z += z
+
+ambient_light = AmbientLight()
+ambient_light.intensity = 0.5
+
+print(camera.position)
+
+def update():
+    camera.position = (0,0,-20)
+    camera.look_at(orion_master)
+    camera.position = (0,0,-20)
     if ui_visible:
         editor_camera.enabled = False
         editor_camera.position = (0, 0, -10)
@@ -500,6 +582,7 @@ def update():
         ui_off()
 
     global point_index, speed, points, distance, ci, pi, distances, phase, times, trajectory_line, model, current, inter, h
+    o = list(keys.items())
     # WASD camera movement
     if held_keys['w']: editor_camera.position += editor_camera.forward * time.dt * 5  # Move forward
     if held_keys['s']: editor_camera.position -= editor_camera.forward * time.dt * 5  # Move backward
@@ -511,88 +594,193 @@ def update():
         quit()
 
     if point_index < len(points):
-        orion.position = points[point_index]
-        currents = points[point_index]
+        currents = points[point_index+2]
+        previous = points[point_index]
         if point_index + 1 == len(points):
             next = points[0]
         else:
             next = points[point_index + 1]
 
+        #intergrating orion onto trajectory
+        direction = (currents - previous).normalized()
+        orion_master.position += direction * 1 * time.dt
+
+
+        if direction.length() > 0:
+            # Calculate the angle in radians
+            target_rotation_y = math.degrees(math.atan2(direction.x, direction.y))
+            orion_master.rotation_y = lerp(orion_master.rotation_y, target_rotation_y, 5 * time.dt)
+
+            # Update the front's orientation to match the direction of movement
+            tp = orion_master.position + direction
+            orion_master.look_at(tp)
+            if orion_master.rotation_y>0:
+                orion_master.rotation_y+=90
+            else:
+                orion_master.rotation_y-=90
+
         if 8 <= times[point_index] < 48.23658:
             ci = 0
+            key2a.alpha = 1
+            key2b.alpha = 1
         elif 48.23658 <= float(times[point_index]) < 100.1082:
             ci = 1
             phase = "Initial firing"
+            m,j = o[ci]
+            m.alpha = 1
+            j.alpha = 1
+            k,i = o[ci-1]
+            k.alpha = 0
+            i.alpha = 0
         elif 100.1082 <= float(times[point_index]) < 196.0945:
             ci = 2
             phase = "Orion separates from ICPS"
+            m,j = o[ci]
+            m.alpha = 1
+            j.alpha = 1
+            k,i = o[ci-1]
+            k.alpha = 0
+            i.alpha = 0
         elif 196.0945 <= float(times[point_index]) < 283.6495:
             ci = 3
             phase = "Subsequent burning of fuel for higher orbit"
+            m,j = o[ci]
+            m.alpha = 1
+            j.alpha = 1
+            k,i = o[ci-1]
+            k.alpha = 0
+            i.alpha = 0
         elif 283.6495 <= float(times[point_index]) < 792.4494:
             ci = 4
             phase = "Life Systems Check/Orion USS Burn"
+            m,j = o[ci]
+            m.alpha = 1
+            j.alpha = 1
+            k,i = o[ci-1]
+            k.alpha = 0
+            i.alpha = 0
         elif 792.4494 <= float(times[point_index]) < 1487.65:
             ci = 5
             phase = "Life Systems Check/Burn Fuel"
+            m,j = o[ci]
+            m.alpha = 1
+            j.alpha = 1
+            k,i = o[ci-1]
+            k.alpha = 0
+            i.alpha = 0
         elif 1487.65 <= float(times[point_index]) < 6150.25142:
             ci = 6
             phase = "TransLunar Injection Propells to Moon"
+            m,j = o[ci]
+            m.alpha = 1
+            j.alpha = 1
+            k,i = o[ci-1]
+            k.alpha = 0
+            i.alpha = 0
         elif 6150.25142 <= float(times[point_index]) < 7200.25142:
             ci = 7
             phase = 'Translunar Outbound'
+            
+            m,j = o[ci]
+            m.alpha = 1
+            j.alpha = 1
+            k,i = o[ci-1]
+            k.alpha = 0
+            i.alpha = 0
         elif 7200.25142 <= float(times[point_index]) < 10150.16998:
             ci = 8
             phase = 'Return to Earth'
+            m,j = o[ci]
+            m.alpha = 1
+            j.alpha = 1
+            k,i = o[ci-1]
+            k.alpha = 0
+            i.alpha = 0
         elif 12690 <= float(times[point_index]):
             ci = 9
             phase = 'Landing'
+            m,j = o[ci]
+            m.alpha = 1
+            j.alpha = 1
+            k,i = o[ci-1]
+            k.alpha = 0
+            i.alpha = 0
 
         if len(points) != point_index + 1:
             h = times[point_index + 1] - times[point_index]
             h *= 60
             h = h / 25960.633996
 
-        model.position = Vec3(currents.x, currents.y, currents.z)  # clean_line(currents, next, inter)
-        speed = overall_velocity[point_index]
-        x, y, z = model.position
-        x2, y2, z2 = next
+        if ci >=2:
+            separate(slsnose_entity, slsbody_entity)
+            slsnose_entity.z -= 0.5
+            slsbody_entity.z -= 0.5
+            orion_maste.position=Vec3(0,0,0)
 
-        current.append(points[point_index + 1])
+        if ci>=6:
+            icps_entity.parent=None
+            icps_entity.z -= 0.5
+            orion_maste.position=Vec3(0,0,0)
 
-        distance += length(x, y, z, x2, y2, z2)
-        distance = np.round(distance, 2)
-        distances.append(distance)
-        if point_index + 1 != len(points):
-            a = Mesh(vertices=current, mode='line', thickness=2)
-            trajectory_line.model = a
-#        else:
-#            point_index = 0
-        #  trajectory_line.alpha = 0
-        distancetotal.text = str(distance)
-        timelabel.text = str(float(times[point_index]))
-        phaselabel.text = phase
+        if ci>=9:
+            orion_capsule.parent=None
+            orion_capsule.z -= 0.5
+            orion_maste.position=Vec3(0,0,0)
+
+
+        
         # xlabel.text="X: "+str(round(points[point_index][0],5)/0.000125)
         # ylabel.text="Y: "+str(round(points[point_index][1],5)/0.000125)
         # zlabel.text="Z: "+str(round(points[point_index][2],5)/0.000125)
-        if pi != ci:
-            trajectory_line, current = create_trajectory_line(colors[ci], point_index, point_index + 1)
-            pi = ci
+        
+        # print('Completed')
         # print(ci)
-        inter += speed * time.dt
-        time.sleep(h)
-        point_index += int(speed * len(points) / 5.3)
+        if ui_visible:
+            pass
+        else:
+            wh.alpha = 1
+            distanceup.alpha = 1
+            distancetotal.alpha = 1
+            phaseup.alpha = 1
+            phaselabel.alpha = 1
+            timeup.alpha = 1
+            timelabel.alpha = 1
+            key1.alpha  = 1
+            orion_master.position =  Vec3(currents.x,currents.y,currents.z) #clean_line(currents, next, inter)
+            speed = overall_velocity[point_index]
+            x,y,z = orion_master.position
+            x2,y2,z2 = next
+
+            current.append(points[point_index + 1])
+
+            distance += length(x, y, z, x2, y2, z2)
+            distance = np.round(distance, 2)
+            distances.append(distance)
+            if point_index+1 != len(points):
+                a = Mesh(vertices=current, mode='line', thickness=2)
+                trajectory_line.model = a
+    #        else:
+    #            point_index = 0
+            #  trajectory_line.alpha = 0
+            distancetotal.text = str(distance)
+            timelabel.text = str(float(times[point_index]))
+            phaselabel.text = phase
+            trajectory_line, current = create_trajectory_line(colors[ci], point_index, point_index + 1)
+            inter += speed * time.dt
+            time.sleep(h)
+            point_index += int(speed * len(points) / 5.3)
+            if inter >= 1.0:
+                inter = 0
+                point_index += 1
         # point_index += int(speed*len(points)/5.301)
 
-        if inter >= 1.0:
-            inter = 0
-            point_index += 1
+        
     else:
         point_index = 0
         speed = overall_velocity[0]
         distance = 0
         current = [points[0], points[1]]
-        scene.clear()
+        # scene.clear()
 
     global n
     n += 1
