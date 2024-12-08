@@ -569,9 +569,6 @@ ambient_light.intensity = 0.5
 print(camera.position)
 
 def update():
-    camera.position = (0,0,-20)
-    camera.look_at(orion_master)
-    camera.position = (0,0,-20)
     if ui_visible:
         editor_camera.enabled = False
         editor_camera.position = (0, 0, -10)
