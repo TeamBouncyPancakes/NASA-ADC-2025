@@ -41,9 +41,10 @@ def create_trajectory_line(c,x,y):
 
 app = Ursina(size=(1000,500))
 
+
+
 model = Entity(model='sphere', scale = (1,1,1),color=color.green)
 model._eternal = True
-
 
 
 index = 1
