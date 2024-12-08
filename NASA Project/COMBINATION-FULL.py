@@ -123,7 +123,7 @@ def create_trajectory_line(c, x, y):
     global ci, points
 
     current = [points[x], points[y]]
-
+    print(current[0].is_nan(), current[1].is_nan())
     if current[0].is_nan():
         print("One of the values was NaN.")
     elif current[1].is_nan():
