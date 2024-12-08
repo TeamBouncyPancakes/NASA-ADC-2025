@@ -9,7 +9,7 @@ from csv_funcs import *
 
 app = Ursina(size=(1000, 500))
 
-ms_data = pd.read_csv('middle-school-data.csv')
+ms_data = pd.read_csv("middle-school-data.csv")
 
 x_velocity = ms_data['Vx(km/s)[J2000-EARTH]'].to_numpy()
 y_velocity = ms_data['Vy(km/s)[J2000-EARTH]'].to_numpy()
@@ -120,17 +120,31 @@ points = [Vec3(a, b, s) * 0.000125 for a, b, s in
 
 
 def create_trajectory_line(c, x, y):
-    global ci, points
+    global ci, points  # Ensure 'points' is properly initialized and populated
+    scale_factor = 0.000125
 
+    # Validate 'points' list and indices
+    if not points or len(points) <= max(x, y):
+        print("Error: Invalid points list or indices out of range.")
+        return None, None
+
+    # Extract current points
     current = [points[x], points[y]]
-    print(current[0].is_nan(), current[1].is_nan())
-    if current[0].is_nan():
-        print("One of the values was NaN.")
-    elif current[1].is_nan():
-        print("Another one of the values was NaN.")
-    else:
-        line = Entity(model=Mesh(vertices=points, mode='line', thickness=2), color=c)
-        return line, current
+
+    # Ensure points are valid Vec3 objects
+    if not all(isinstance(pt, Vec3) for pt in current):
+        print("Error: Points must be Vec3 objects.")
+        return None, None
+
+    # Create a line entity using the two points
+    vertices = current  # Start and end points for the line
+    line = Entity(
+        model=Mesh(vertices=vertices, mode='line'),  # Create a line model
+        color=c,
+        scale=scale_factor  # Optional scaling
+    )
+
+    return line, current
 
 
 
@@ -154,7 +168,7 @@ index = 1
 trajectory_line, current = create_trajectory_line(colors[ci], 0, 1)
 
 editor_camera = EditorCamera(pan_speed=1000)
-
+# app.run()
 
 camera.fov = 155
 
@@ -350,16 +364,14 @@ def lat_lon_to_3d(lat, lon, radius):
     z = radius * math.cos(lat_rad) * math.sin(lon_rad)
     return Vec3(x, y, z)
 
-try:
-    antenna_models = [
-        load_model('assets/textures-models/antenna-models/DSN_34.obj'),
-        load_model('assets/textures-models/antenna-models/DSN_34_1.obj'),
-        load_model('assets/textures-models/antenna-models/DSN_34_2.obj'),
-        load_model('assets/textures-models/antenna-models/DSN_34_3.obj'),
 
-    ]
-except Exception as e:
-    print(f"Error loading model: {e}")
+antenna_models = [
+    load_model('assets/textures-models/antenna-models/DSN_34.obj'),
+    load_model('assets/textures-models/antenna-models/DSN_34_1.obj'),
+    load_model('assets/textures-models/antenna-models/DSN_34_2.obj'),
+    load_model('assets/textures-models/antenna-models/DSN_34_3.obj'),
+
+]
 
 class marker:
     def __init__(self, position=(0,0,0), color=color.white, scale=0.0005, parent=None, texture=None, model=load_model('assets/textures-models/antenna-stuff/Antenna_model')):
@@ -449,6 +461,7 @@ for antenna in antennas:
     non_ui.append(antenna)
 
 model_number = 0
+
 
 def ui_on(manual=False):
     global ui_visible
@@ -566,8 +579,7 @@ def update():
         # print(ci)
         inter += speed * time.dt
         time.sleep(h)
-        if not ui_visible:
-         point_index += int(speed * len(points) / 5.3)
+        point_index += int(speed * len(points) / 5.3)
         # point_index += int(speed*len(points)/5.301)
 
         if inter >= 1.0:
@@ -614,4 +626,7 @@ def start():
     app.run()
 n = 0
 
-start()
+try:
+    start()
+except e:
+    print(e,"ERRRRRRRRRROEEEEEEEE")
