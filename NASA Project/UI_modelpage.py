@@ -9,24 +9,30 @@ import time
 
 app = Ursina()
 
-slsbody = load_model('assets/textures-models/orion-models/body_sls.obj')
-slsbody_entity = Entity(model = slsbody, texture = 'assets/textures-models/orion-models/body_sls.mtl', scale = (0.1,0.1,0.1), position=(9,7.98,0))
+z_offset = 0
+slsbody = load_model('assets/textures-models/orion-models/orion_nasa_sls_body.glb')
+slsbody_entity = Entity(model = slsbody, scale = (0.1,0.1,0.1), position=(9,7.98,z_offset))
 slsbody_entity.rotation_z = 180
-slsnose = load_model('assets/textures-models/orion-models/orion_mpcv.obj')
+slsbody_entity.rotation_y = 90
+slsnose = load_model('assets/textures-models/orion-models/orionmpcv.glb')
 # slsnosetext = load_texture('assets/textures-models/orion-models/orion_mpcv.mtl')
-slsnose_entity = Entity(model = slsnose, texture = 'assets/textures-models/orion-models/orion_mpcv.mtl', scale = (0.12,0.12,0.12), position = (3.1,2.333,0))
+slsnose_entity = Entity(model = slsnose, scale = (0.12,0.12,0.12), position = (3.1,2.333,z_offset))
 sls = Entity()
 slsbody_entity.parent = sls
 slsnose_entity.parent = sls
 
-icps = load_model('assets/textures-models/orion-models/icps.obj')
-icps_entity = Entity(model=icps, texture = 'assets/textures-models/orion-models/icps.mtl', scale=(0.014,0.014,0.014), position = (-1.5,3.8278,0))
-icps_entity.rotation_x = -90
+#txt = Text(text = "Artemis II mission.")
 
-capsule = load_model('assets/textures-models/orion-models/orion_capsule_new.obj')
-capsule_entity = Entity(model=capsule, scale = (1 , 1 , 1), position=(-10,-3,0))
-service_module = load_model('assets/textures-models/orion-models/orion_service_module.obj')
-service_module_entity = Entity(model=service_module, scale = (1 , 1 , 1), position=(-4.6,0.2,0))
+icps = load_model('assets/textures-models/orion-models/icpstextured.glb')
+icps_entity = Entity(model=icps, scale=(0.014,0.014,0.014), position = (-1.5,3.8278,z_offset))
+icps_entity.rotation_x = 90
+
+capsule = load_model('assets/textures-models/orion-models/orioncapsuletextured.glb')
+capsule_entity = Entity(model=capsule, scale = (1 , 1 , 1), position=(-10.9,0.188,z_offset))
+service_module = load_model('assets/textures-models/orion-models/servicemoduletextured.glb')
+service_module_entity = Entity(model=service_module, scale = (1 , 1 , 1), position=(-5.6,0.2,z_offset))
+service_module_entity.origin =Vec3(1.4,0,0)
+capsule_entity.rotation_y = 180
 
 orion = Entity()
 
@@ -37,7 +43,6 @@ artemis2 = Entity()
 sls.parent = artemis2
 icps_entity.parent = artemis2
 orion.parent = artemis2
-capsule_entity.z=capsule_entity.scale_z/2
 
 
 capsule_entity.parent = artemis2
@@ -102,10 +107,10 @@ def update():
 # #     #     rotate_orion(orion,0,5,0)
 # #     # if held_keys['l']:  
 # #     #     rotate_orion(orion,0,-5,0)
-#     if held_keys['i']:
-#         player.y += 10 * time.dt  # Move up
-#     if held_keys['k']:
-#         player.y -= 10 * time.dt  # Move down
+    if held_keys['i']:
+        player.y += 10 * time.dt  # Move up
+    if held_keys['k']:
+        player.y -= 10 * time.dt  # Move down
 # #     if held_keys['escape']:
 # #         exit(code=None
 
