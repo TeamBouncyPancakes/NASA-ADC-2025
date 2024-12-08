@@ -41,21 +41,9 @@ def create_trajectory_line(c,x,y):
 
 app = Ursina(size=(1000,500))
 
+model = Entity(model='sphere', scale = (1,1,1),color=color.green)
+model._eternal = True
 
-service_module = Entity(model='assets/textures-models/orion-models/orion_service_module.obj', scale=(1, 1, 1),
-                        color=color.light_gray)
-model = Entity(model='assets/textures-models/orion-models/orion_capsule_new.obj', scale=(1, 1, 1),
-                 color=color.light_gray)
-capsule = model
-
-capsule_entity = Entity(model=capsule, position=(0, 0, 0))
-service_module_entity = Entity(model=service_module, scale=1, position=(0, 1.2, 0))
-
-orion = Entity(scale=(0.3, 0.3, 0.3))
-orion.position = (0, 0, 0)
-
-capsule_entity.parent = orion
-service_module_entity.parent = orion
 
 
 index = 1
@@ -73,18 +61,18 @@ speed = overall_velocity[0]
 distance = 0
 phase = "Launch"
 
-distanceup = Text(text="Distance Travelled (km):",x=-0.97,y=0.37,size=0.02,font='assets/fonts/SpaceMono-Regular.ttf')
-distancetotal = Text(text=str(distance),x=-0.97,y=0.33,size=0.04,font='assets/fonts/SpaceMono-Regular.ttf')
+distanceup = Text(text="Distance Travelled (km):",x=-0.97,y=0.37,size=0.02,font='SpaceMono-Regular.ttf')
+distancetotal = Text(text=str(distance),x=-0.97,y=0.33,size=0.04,font='SpaceMono-Regular.ttf')
 distancetotal._eternal = True
 distanceup._eternal = True
 
-phaseup = Text(text='Phase:',x=-0.97,y=0.47,size=0.02,font='assets/fonts/SpaceMono-Regular.ttf')
-phaselabel = Text(text=phase,x=-0.97,y=0.43,size=0.04,font='assets/fonts/SpaceMono-Regular.ttf')
+phaseup = Text(text='Phase:',x=-0.97,y=0.47,size=0.02,font='SpaceMono-Regular.ttf')
+phaselabel = Text(text=phase,x=-0.97,y=0.43,size=0.04,font='SpaceMono-Regular.ttf')
 phaselabel._eternal = True
 phaseup._eternal = True
 
-timeup = Text(text="Time (min):",x=-0.97,y=0.27,size=0.02,font='assets/fonts/SpaceMono-Regular.ttf')
-timelabel = Text(text=str(times[0]),x=-0.97,y=0.23,font='assets/fonts/SpaceMono-Regular.ttf',size=0.04)
+timeup = Text(text="Time (min):",x=-0.97,y=0.27,size=0.02,font='SpaceMono-Regular.ttf')
+timelabel = Text(text=str(times[0]),x=-0.97,y=0.23,font='SpaceMono-Regular.ttf',size=0.04)
 timelabel._eternal = True
 timeup._eternal = True
 
@@ -92,66 +80,66 @@ wh = Entity(model = 'quad',color=color.white,scale=(10.5,9),position=(-69,10,5))
 
 
 
-key1 = Text(text="Color Key (Phases):",x=-0.97,y=0.15,size=0.02,font='assets/fonts/SpaceMono-Regular.ttf')
+key1 = Text(text="Color Key (Phases):",x=-0.97,y=0.15,size=0.02,font='SpaceMono-Regular.ttf')
 
-key2a = Text(text="Launch:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
+key2a = Text(text="Launch:",x=-0.97,y=0.1,font='SpaceMono-Regular.ttf',size=0.03)
 key2b = Entity(model='quad',color=color.red,scale = (6,6),position=(-55,8,0))
 
 key2a.alpha = 1
 key2b.alpha = 1
 
-key3a = Text(text="Initital Firing:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
+key3a = Text(text="Initital Firing:",x=-0.97,y=0.1,font='SpaceMono-Regular.ttf',size=0.03)
 key3b = Entity(model='quad',color=color.cyan,scale = (6,6),position=(-55,8,0))
 
 
 key3a.alpha = 0
 key3b.alpha = 0
 
-key4a = Text(text="Orion Separation:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
+key4a = Text(text="Orion Separation:",x=-0.97,y=0.1,font='SpaceMono-Regular.ttf',size=0.03)
 key4b = Entity(model='quad',color=color.green,scale = (6,6),position=(-55,8,0))
 
 key4a.alpha = 0
 key4b.alpha = 0
 
-key5a = Text(text="Subsequent Burning:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
+key5a = Text(text="Subsequent Burning:",x=-0.97,y=0.1,font='SpaceMono-Regular.ttf',size=0.03)
 key5b = Entity(model='quad',color=color.gold,scale = (6,6),position=(-55,8,0))
 
 key5a.alpha = 0
 key5b.alpha = 0
 
-key6a = Text(text="Life Systems Check:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
+key6a = Text(text="Life Systems Check:",x=-0.97,y=0.1,font='SpaceMono-Regular.ttf',size=0.03)
 key6b = Entity(model='quad',color=color.pink,scale = (6,6),position=(-55,8,0))
 
 key6a.alpha = 0
 key6b.alpha = 0
 
-key7a = Text(text="Burn Fuel:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
+key7a = Text(text="Burn Fuel:",x=-0.97,y=0.1,font='SpaceMono-Regular.ttf',size=0.03)
 key7b = Entity(model='quad',color=color.yellow,scale = (6,6),position=(-55,8,0))
 
 key7a.alpha = 0
 key7b.alpha = 0
 
-key8a = Text(text="Translunar Injection:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.02)
+key8a = Text(text="Translunar Injection:",x=-0.97,y=0.1,font='SpaceMono-Regular.ttf',size=0.02)
 key8b = Entity(model='quad',color=color.orange,position=(-55,8,0),scale = (6,6))
 
 key8a.alpha = 0
 key8b.alpha = 0
 
-key9a = Text(text="Translunar Outbound:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
+key9a = Text(text="Translunar Outbound:",x=-0.97,y=0.1,font='SpaceMono-Regular.ttf',size=0.03)
 key9b = Entity(model='quad',color=color.brown,scale = (6,6),position=(-55,8,0))
 
 
 key9a.alpha = 0
 key9b.alpha = 0
 
-key0a = Text(text="Return:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
+key0a = Text(text="Return:",x=-0.97,y=0.1,font='SpaceMono-Regular.ttf',size=0.03)
 key0b = Entity(model='quad',color=color.azure,scale = (6,6),position=(-55,8,0))
 
 
 key0a.alpha = 0
 key0b.alpha = 0
 
-key15a = Text(text="Landing:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
+key15a = Text(text="Landing:",x=-0.97,y=0.1,font='SpaceMono-Regular.ttf',size=0.03)
 key15b = Entity(model='quad',color=color.lime,scale = (6,6),position=(-55,8,0))
 
 
@@ -172,18 +160,18 @@ distances = []
 
 antennas = [{'name':'WPSA','value':1000,'color':color.red},{'name':'DS54','value':800,'color':color.azure},{'name':'DS24','value':600,'color':color.green},{'name':'DS34','value':400,'color':color.orange}]
 
-antennatitle = Text(text="Antenna priority",x=0.7,y=0,size=0.02,font='assets/fonts/SpaceMono-Regular.ttf')
+antennatitle = Text(text="Antenna priority",x=0.7,y=0,size=0.02,font='SpaceMono-Regular.ttf')
 
-antenna1 = Text(text="1) "+antennas[0]['name']+" - "+str(antennas[0]['value']),x=0.65,y=-0.05,size=0.04,font='assets/fonts/SpaceMono-Regular.ttf',color=antennas[0]['color'])
+antenna1 = Text(text="1) "+antennas[0]['name']+" - "+str(antennas[0]['value']),x=0.65,y=-0.05,size=0.04,font='SpaceMono-Regular.ttf',color=antennas[0]['color'])
 
-antenna2 = Text(text="2) "+antennas[1]['name']+" - "+str(antennas[1]['value']),x=0.65,y=-0.1,size=0.04,font='assets/fonts/SpaceMono-Regular.ttf',color=antennas[1]['color'])
+antenna2 = Text(text="2) "+antennas[1]['name']+" - "+str(antennas[1]['value']),x=0.65,y=-0.1,size=0.04,font='SpaceMono-Regular.ttf',color=antennas[1]['color'])
 
-antenna3 = Text(text="3) "+antennas[2]['name']+" - "+str(antennas[2]['value']),x=0.65,y=-0.15,size=0.04,font='assets/fonts/SpaceMono-Regular.ttf',color=antennas[2]['color'])
+antenna3 = Text(text="3) "+antennas[2]['name']+" - "+str(antennas[2]['value']),x=0.65,y=-0.15,size=0.04,font='SpaceMono-Regular.ttf',color=antennas[2]['color'])
 
-antenna4 = Text(text="4) "+antennas[3]['name']+" - "+str(antennas[3]['value']),x=0.65,y=-0.2,size=0.04,font='assets/fonts/SpaceMono-Regular.ttf',color=antennas[3]['color'])
+antenna4 = Text(text="4) "+antennas[3]['name']+" - "+str(antennas[3]['value']),x=0.65,y=-0.2,size=0.04,font='SpaceMono-Regular.ttf',color=antennas[3]['color'])
 
-# p_b = Button(icon='playbutton.png',scale=.25,x=0,y=-0.4,color=color.white)
-# p_b.alpha = 0
+p_b = Button(icon='playbutton.png',scale=.25,x=0,y=-0.4,color=color.white)
+p_b.alpha = 0
 
 
 def length(x,y,z,x2,y2,z2):
@@ -209,101 +197,84 @@ def clean_line(current,next,f):
 
 inter = 0.75
 
-# Antennas
 
-class Planet:
-    def __init__(self, tripscale, file, pos=(0, 0, 0)):
-        self.entity = Entity(model="sphere", texture=file, scale=(tripscale, tripscale, tripscale), position=pos)
+# loading orion modules
+slsbody = load_model('assets/textures-models/orion-models/orion_nasa_sls_body.glb')
+slsbody_entity = Entity(model = slsbody, scale = (0.12,0.12,0.12))
+slsbody_entity.rotation_z = 180
+slsbody_entity.y = 0.45
+slsnose = load_model('assets/textures-models/orion-models/orionmpcv.glb')
+slsnose_entity = Entity(model = slsnose, scale = (0.12,0.12,0.12))
+slsnose_entity.y = 10
+icps = load_model('assets/textures-models/orion-models/icpstextured.glb')
+service_module = load_model('assets/textures-models/orion-models/servicemoduletextured.glb')
+capsule = load_model('assets/textures-models/orion-models/orioncapsuletextured.glb')
+capsule_entity = Entity(model=capsule, position=(-1.7,3.21,-0.18))
+service_module_entity = Entity(model=service_module, scale = 1, position=(-3.5,1.2,0))
+orion = Entity(scale = (0.2,0.2,0.2))
+orion.position=(0, 0, 0)
+capsule_entity.parent = orion
+service_module_entity.parent = orion
+icps_entity = Entity(model=icps, scale=0.008, position = (-0.33,0.3,0))
+icps_entity.rotation_x = -90
+orion_maste = Entity(scale = (1,1,1))
+icps_entity.parent = orion_maste
+orion.parent = orion_maste
+# sls.parent = orion_maste   
+orion_maste.y = 9.8
+orion_maste.x = 0.33
+g_scale =0.2
+orion_master = Entity(scale = (g_scale,g_scale,g_scale))
+slsbody_entity.parent = orion_master
+slsnose_entity.parent = orion_master
+orion_maste.parent = orion_master
+# orion_master.z = -0.5
+slsbody_entity.rotation_y = 90
+orion_master.rotation_z = -90
+light = DirectionalLight(parent=orion_master)
+light.look_at(orion_master)
 
+def median_filter(points, window_size=3):
+    smoothed_points = []
+    for i in range(len(points)):
+        # Define the window range: from max(0, i - window_size//2) to min(len(points), i + window_size//2)
+        start = max(0, i - window_size // 2)
+        end = min(len(points), i + window_size // 2 + 1)
+        
+        # Extract the window of points
+        window = points[start:end]
+        
+        # Apply median filter to each dimension (x, y, z)
+        window_x = [p[0] for p in window]
+        window_y = [p[1] for p in window]
+        window_z = [p[2] for p in window]
+        
+        # Calculate the median for each dimension
+        median_x = np.median(window_x)
+        median_y = np.median(window_y)
+        median_z = np.median(window_z)
+        
+        # Create a new smoothed point using the median values
+        smoothed_point = Vec3(median_x, median_y, median_z)
+        smoothed_points.append(smoothed_point)
+    
+    return smoothed_points
 
-class marker:
-    def __init__(self, position=(0, 0, 0), color=color.white, scale=0.0005, parent=None, texture=None,
-                 model=load_model('assets/textures-models/antenna-stuff/Antenna_model')):
-        self.pos = position
-        self.color = color
-        self.scale = scale
-        self.parent = parent
-        self.texture = texture
-        self.model = model
+points_array = median_filter(points, 30)
 
-    @property
-    def entity(self):
-        entity = Entity(color=self.color, scale=self.scale, parent=self.parent, texture=self.texture, model=self.model,
-                        position=self.pos)
+#points = points_array
 
-        return entity
+def separate(e1,e2):
+        e1.parent = None
+        e2.parent = None
 
-    def update(self):
-        self.entity.look_at(cam)
+def translate_orion(e , x , y , z):
+     e.x += x
+     e.y += y
+     e.z += z
 
-
-def lat_lon_to_3d(lat, lon, radius):
-    """Convert latitude and longitude to 3D coordinates on a sphere."""
-    lat_rad = math.radians(lat)
-    lon_rad = math.radians(lon)
-
-    x = radius * math.cos(lat_rad) * math.cos(lon_rad)
-    y = radius * math.sin(lat_rad)
-    z = radius * math.cos(lat_rad) * math.sin(lon_rad)
-    return Vec3(x, y, z)
-
-
-# Create the Earth and Moon
-earth = Planet(2, "assets/textures-models/planet-textures/earth.jpg", pos=(0, 2, 0)).entity
-moon = Planet(0.54, "assets/textures-models/planet-textures/moon.jpg", pos=(60, 0, 0)).entity
-earth.cull_faces, earth.double_sided = False, True
-moon.cull_faces, moon.double_sided = False, True
-
-# Sky background
-Sky(texture="assets/textures-models/space-textures/space4.jpg")
-# sky
-# Define the Earth's radius
-earth_radius = 1.0  # The Earth's radius in your model is 1.0 unit (due to model scaling)
-
-# Add Artemis II antenna markers (example latitudes and longitudes)
-antenna_locations = [
-    (35.3399, -116.875),  # California
-    (-35.5985, 148.982),  # Australia
-    (40.5276, -4.5271),  # Spain
-    (32.7804, 106.5364)
-]
-
-antenna_models = [
-    load_model('assets/textures-models/antenna-models/DSN_34.obj'),
-    load_model('assets/textures-models/antenna-models/DSN_34_1.obj'),
-    load_model('assets/textures-models/antenna-models/DSN_34_2.obj'),
-    load_model('assets/textures-models/antenna-models/DSN_34_3.obj'),
-
-]
-
-position = lat_lon_to_3d(antenna_locations[2][0], antenna_locations[2][1], earth_radius * 0.5)
-texture = None
-SpainMarker = marker(model=antenna_models[0], scale=0.001, parent=earth, color=color.red, position=position,
-                     texture=texture)
-SpainMarker.entity.show()
-
-position = lat_lon_to_3d(antenna_locations[0][0], antenna_locations[0][1], earth_radius * 0.5)
-texture = None
-CAMarker = marker(model=antenna_models[1], scale=0.001, parent=earth, color=color.red, position=position,
-                  texture=texture)
-
-position = lat_lon_to_3d(antenna_locations[1][0], antenna_locations[1][1], earth_radius*0.5)
-texture = None
-AustraliaMarker = marker(model=antenna_models[2], scale=0.001, parent=earth, color=color.red, position=position, texture=texture)
-AustraliaMarker.entity.show()
-mouse.locked = True
-
-position = lat_lon_to_3d(antenna_locations[3][0], antenna_locations[3][1], earth_radius*0.5)
-texture = None
-WPSA = marker(model=antenna_models[3], scale=0.001, parent=earth, color=color.red, position=position, texture=texture)
-WPSA.entity.show()
-
-antennas = [SpainMarker, CAMarker, AustraliaMarker, WPSA]
-CAMarker.entity.rotate((305,45,15),earth)
-SpainMarker.entity.rotate((385,45,40),earth)
-AustraliaMarker.entity.rotate((310,200,90), earth)
-WPSA.entity.rotate((45,300,30), earth)
-model_number = 1
+ambient_light = AmbientLight()
+ambient_light.intensity = 0.5
 
 def update():
     global point_index, speed, points, distances, current, inter, colors,times,ci,phase, trajectory_line, distance
@@ -317,14 +288,31 @@ def update():
     pi = 0
 
     if point_index < len(points):
-        model.position = points[point_index]
-        currents = points[point_index]
+        currents = points[point_index+2]
+        previous = points[point_index]
         if point_index + 1 == len(points):
             next = points[0]
         else:
             next = points[point_index+1]
 
-        
+        #intergrating orion onto trajectory
+        direction = (currents - previous).normalized()
+        orion_master.position += direction * 1 * time.dt
+
+
+        if direction.length() > 0:
+            # Calculate the angle in radians
+            target_rotation_y = math.degrees(math.atan2(direction.x, direction.y))
+            orion_master.rotation_y = lerp(orion_master.rotation_y, target_rotation_y, 5 * time.dt)
+
+            # Update the front's orientation to match the direction of movement
+            tp = orion_master.position + direction
+            orion_master.look_at(tp)
+            if orion_master.rotation_y>0:
+                orion_master.rotation_y+=90
+            else:
+                orion_master.rotation_y-=90
+
 
         if 8 <= times[point_index] < 48.23658:
             ci = 0
@@ -431,11 +419,30 @@ def update():
             h *= 60
             h = h/25960.633996
 
+        if ci >=2:
+            separate(slsnose_entity, slsbody_entity)
+            slsnose_entity.z -= 0.5
+            slsbody_entity.z -= 0.5
+            orion_maste.position=Vec3(0,0,0)
 
-        orion.position =  Vec3(currents.x,currents.y,currents.z) #clean_line(currents, next, inter)
+        if ci>=6:
+            icps_entity.parent=None
+            icps_entity.z -= 0.5
+            orion_maste.position=Vec3(0,0,0)
+
+        if ci>=9:
+            orion_capsule.parent=None
+            orion_capsule.z -= 0.5
+            orion_maste.position=Vec3(0,0,0)
+
+
+
+        orion_master.position =  Vec3(currents.x,currents.y,currents.z) #clean_line(currents, next, inter)
         speed = overall_velocity[point_index]
-        x,y,z = orion.position
+        x,y,z = orion_master.position
         x2,y2,z2 = next
+
+    
 
         current.append(points[point_index + 1])
 
