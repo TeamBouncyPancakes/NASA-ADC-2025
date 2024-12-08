@@ -61,18 +61,18 @@ speed = overall_velocity[0]
 distance = 0
 phase = "Launch"
 
-distanceup = Text(text="Distance Travelled (km):",x=-0.97,y=0.37,size=0.02,font='SpaceMono-Regular.ttf')
-distancetotal = Text(text=str(distance),x=-0.97,y=0.33,size=0.04,font='SpaceMono-Regular.ttf')
+distanceup = Text(text="Distance Travelled (km):",x=-0.97,y=0.37,size=0.02,font='assets/fonts/SpaceMono-Regular.ttf')
+distancetotal = Text(text=str(distance),x=-0.97,y=0.33,size=0.04,font='assets/fonts/SpaceMono-Regular.ttf')
 distancetotal._eternal = True
 distanceup._eternal = True
 
-phaseup = Text(text='Phase:',x=-0.97,y=0.47,size=0.02,font='SpaceMono-Regular.ttf')
-phaselabel = Text(text=phase,x=-0.97,y=0.43,size=0.04,font='SpaceMono-Regular.ttf')
+phaseup = Text(text='Phase:',x=-0.97,y=0.47,size=0.02,font='assets/fonts/SpaceMono-Regular.ttf')
+phaselabel = Text(text=phase,x=-0.97,y=0.43,size=0.04,font='assets/fonts/SpaceMono-Regular.ttf')
 phaselabel._eternal = True
 phaseup._eternal = True
 
-timeup = Text(text="Time (min):",x=-0.97,y=0.27,size=0.02,font='SpaceMono-Regular.ttf')
-timelabel = Text(text=str(times[0]),x=-0.97,y=0.23,font='SpaceMono-Regular.ttf',size=0.04)
+timeup = Text(text="Time (min):",x=-0.97,y=0.27,size=0.02,font='assets/fonts/SpaceMono-Regular.ttf')
+timelabel = Text(text=str(times[0]),x=-0.97,y=0.23,font='assets/fonts/SpaceMono-Regular.ttf',size=0.04)
 timelabel._eternal = True
 timeup._eternal = True
 
@@ -80,66 +80,66 @@ wh = Entity(model = 'quad',color=color.white,scale=(10.5,9),position=(-69,10,5))
 
 
 
-key1 = Text(text="Color Key (Phases):",x=-0.97,y=0.15,size=0.02,font='SpaceMono-Regular.ttf')
+key1 = Text(text="Color Key (Phases):",x=-0.97,y=0.15,size=0.02,font='assets/fonts/SpaceMono-Regular.ttf')
 
-key2a = Text(text="Launch:",x=-0.97,y=0.1,font='SpaceMono-Regular.ttf',size=0.03)
+key2a = Text(text="Launch:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
 key2b = Entity(model='quad',color=color.red,scale = (6,6),position=(-55,8,0))
 
 key2a.alpha = 1
 key2b.alpha = 1
 
-key3a = Text(text="Initital Firing:",x=-0.97,y=0.1,font='SpaceMono-Regular.ttf',size=0.03)
+key3a = Text(text="Initital Firing:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
 key3b = Entity(model='quad',color=color.cyan,scale = (6,6),position=(-55,8,0))
 
 
 key3a.alpha = 0
 key3b.alpha = 0
 
-key4a = Text(text="Orion Separation:",x=-0.97,y=0.1,font='SpaceMono-Regular.ttf',size=0.03)
+key4a = Text(text="Orion Separation:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
 key4b = Entity(model='quad',color=color.green,scale = (6,6),position=(-55,8,0))
 
 key4a.alpha = 0
 key4b.alpha = 0
 
-key5a = Text(text="Subsequent Burning:",x=-0.97,y=0.1,font='SpaceMono-Regular.ttf',size=0.03)
+key5a = Text(text="Subsequent Burning:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
 key5b = Entity(model='quad',color=color.gold,scale = (6,6),position=(-55,8,0))
 
 key5a.alpha = 0
 key5b.alpha = 0
 
-key6a = Text(text="Life Systems Check:",x=-0.97,y=0.1,font='SpaceMono-Regular.ttf',size=0.03)
+key6a = Text(text="Life Systems Check:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
 key6b = Entity(model='quad',color=color.pink,scale = (6,6),position=(-55,8,0))
 
 key6a.alpha = 0
 key6b.alpha = 0
 
-key7a = Text(text="Burn Fuel:",x=-0.97,y=0.1,font='SpaceMono-Regular.ttf',size=0.03)
+key7a = Text(text="Burn Fuel:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
 key7b = Entity(model='quad',color=color.yellow,scale = (6,6),position=(-55,8,0))
 
 key7a.alpha = 0
 key7b.alpha = 0
 
-key8a = Text(text="Translunar Injection:",x=-0.97,y=0.1,font='SpaceMono-Regular.ttf',size=0.02)
+key8a = Text(text="Translunar Injection:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.02)
 key8b = Entity(model='quad',color=color.orange,position=(-55,8,0),scale = (6,6))
 
 key8a.alpha = 0
 key8b.alpha = 0
 
-key9a = Text(text="Translunar Outbound:",x=-0.97,y=0.1,font='SpaceMono-Regular.ttf',size=0.03)
+key9a = Text(text="Translunar Outbound:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
 key9b = Entity(model='quad',color=color.brown,scale = (6,6),position=(-55,8,0))
 
 
 key9a.alpha = 0
 key9b.alpha = 0
 
-key0a = Text(text="Return:",x=-0.97,y=0.1,font='SpaceMono-Regular.ttf',size=0.03)
+key0a = Text(text="Return:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
 key0b = Entity(model='quad',color=color.azure,scale = (6,6),position=(-55,8,0))
 
 
 key0a.alpha = 0
 key0b.alpha = 0
 
-key15a = Text(text="Landing:",x=-0.97,y=0.1,font='SpaceMono-Regular.ttf',size=0.03)
+key15a = Text(text="Landing:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
 key15b = Entity(model='quad',color=color.lime,scale = (6,6),position=(-55,8,0))
 
 
@@ -160,18 +160,18 @@ distances = []
 
 antennas = [{'name':'WPSA','value':1000,'color':color.red},{'name':'DS54','value':800,'color':color.azure},{'name':'DS24','value':600,'color':color.green},{'name':'DS34','value':400,'color':color.orange}]
 
-antennatitle = Text(text="Antenna priority",x=0.7,y=0,size=0.02,font='SpaceMono-Regular.ttf')
+antennatitle = Text(text="Antenna priority",x=0.7,y=0,size=0.02,font='assets/fonts/SpaceMono-Regular.ttf')
 
-antenna1 = Text(text="1) "+antennas[0]['name']+" - "+str(antennas[0]['value']),x=0.65,y=-0.05,size=0.04,font='SpaceMono-Regular.ttf',color=antennas[0]['color'])
+antenna1 = Text(text="1) "+antennas[0]['name']+" - "+str(antennas[0]['value']),x=0.65,y=-0.05,size=0.04,font='assets/fonts/SpaceMono-Regular.ttf',color=antennas[0]['color'])
 
-antenna2 = Text(text="2) "+antennas[1]['name']+" - "+str(antennas[1]['value']),x=0.65,y=-0.1,size=0.04,font='SpaceMono-Regular.ttf',color=antennas[1]['color'])
+antenna2 = Text(text="2) "+antennas[1]['name']+" - "+str(antennas[1]['value']),x=0.65,y=-0.1,size=0.04,font='assets/fonts/SpaceMono-Regular.ttf',color=antennas[1]['color'])
 
-antenna3 = Text(text="3) "+antennas[2]['name']+" - "+str(antennas[2]['value']),x=0.65,y=-0.15,size=0.04,font='SpaceMono-Regular.ttf',color=antennas[2]['color'])
+antenna3 = Text(text="3) "+antennas[2]['name']+" - "+str(antennas[2]['value']),x=0.65,y=-0.15,size=0.04,font='assets/fonts/SpaceMono-Regular.ttf',color=antennas[2]['color'])
 
-antenna4 = Text(text="4) "+antennas[3]['name']+" - "+str(antennas[3]['value']),x=0.65,y=-0.2,size=0.04,font='SpaceMono-Regular.ttf',color=antennas[3]['color'])
+antenna4 = Text(text="4) "+antennas[3]['name']+" - "+str(antennas[3]['value']),x=0.65,y=-0.2,size=0.04,font='assets/fonts/SpaceMono-Regular.ttf',color=antennas[3]['color'])
 
-p_b = Button(icon='playbutton.png',scale=.25,x=0,y=-0.4,color=color.white)
-p_b.alpha = 0
+# p_b = Button(icon='playbutton.png',scale=.25,x=0,y=-0.4,color=color.white)
+# p_b.alpha = 0
 
 
 def length(x,y,z,x2,y2,z2):
