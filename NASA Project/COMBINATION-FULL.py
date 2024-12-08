@@ -144,6 +144,8 @@ def create_trajectory_line(c, x, y):
         scale=scale_factor  # Optional scaling
     )
 
+    print('Drew line.')
+
     return line, current
 
 
@@ -610,6 +612,7 @@ def update():
     assets_prefix = "assets/antenna-prioritization/"
     neutral_png = assets_prefix + "neutral.png"
 
+
     # if not toggle:
     #     if csv_to_antenna(n) != none_active:
     #         prioritization_circle_identifier.texture = str(assets_prefix + str(csv_to_antenna(n)) + ".png")
@@ -628,5 +631,8 @@ n = 0
 
 try:
     start()
-except e:
+    
+
+except Exception as e:
     print(e,"ERRRRRRRRRROEEEEEEEE")
+
