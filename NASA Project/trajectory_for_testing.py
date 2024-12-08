@@ -209,6 +209,102 @@ def clean_line(current,next,f):
 
 inter = 0.75
 
+# Antennas
+
+class Planet:
+    def __init__(self, tripscale, file, pos=(0, 0, 0)):
+        self.entity = Entity(model="sphere", texture=file, scale=(tripscale, tripscale, tripscale), position=pos)
+
+
+class marker:
+    def __init__(self, position=(0, 0, 0), color=color.white, scale=0.0005, parent=None, texture=None,
+                 model=load_model('assets/textures-models/antenna-stuff/Antenna_model')):
+        self.pos = position
+        self.color = color
+        self.scale = scale
+        self.parent = parent
+        self.texture = texture
+        self.model = model
+
+    @property
+    def entity(self):
+        entity = Entity(color=self.color, scale=self.scale, parent=self.parent, texture=self.texture, model=self.model,
+                        position=self.pos)
+
+        return entity
+
+    def update(self):
+        self.entity.look_at(cam)
+
+
+def lat_lon_to_3d(lat, lon, radius):
+    """Convert latitude and longitude to 3D coordinates on a sphere."""
+    lat_rad = math.radians(lat)
+    lon_rad = math.radians(lon)
+
+    x = radius * math.cos(lat_rad) * math.cos(lon_rad)
+    y = radius * math.sin(lat_rad)
+    z = radius * math.cos(lat_rad) * math.sin(lon_rad)
+    return Vec3(x, y, z)
+
+
+# Create the Earth and Moon
+earth = Planet(2, "assets/textures-models/planet-textures/earth.jpg", pos=(0, 2, 0)).entity
+moon = Planet(0.54, "assets/textures-models/planet-textures/moon.jpg", pos=(60, 0, 0)).entity
+earth.cull_faces, earth.double_sided = False, True
+moon.cull_faces, moon.double_sided = False, True
+
+# Sky background
+Sky(texture="assets/textures-models/space-textures/space4.jpg")
+
+# Define the Earth's radius
+earth_radius = 1.0  # The Earth's radius in your model is 1.0 unit (due to model scaling)
+
+# Add Artemis II antenna markers (example latitudes and longitudes)
+antenna_locations = [
+    (35.3399, -116.875),  # California
+    (-35.5985, 148.982),  # Australia
+    (40.5276, -4.5271),  # Spain
+    (32.7804, 106.5364)
+]
+
+antenna_models = [
+    load_model('assets/textures-models/antenna-models/DSN_34.obj'),
+    load_model('assets/textures-models/antenna-models/DSN_34_1.obj'),
+    load_model('assets/textures-models/antenna-models/DSN_34_2.obj'),
+    load_model('assets/textures-models/antenna-models/DSN_34_3.obj'),
+
+]
+
+position = lat_lon_to_3d(antenna_locations[2][0], antenna_locations[2][1], earth_radius * 0.5)
+texture = None
+SpainMarker = marker(model=antenna_models[0], scale=0.001, parent=earth, color=color.red, position=position,
+                     texture=texture)
+SpainMarker.entity.show()
+
+position = lat_lon_to_3d(antenna_locations[0][0], antenna_locations[0][1], earth_radius * 0.5)
+texture = None
+CAMarker = marker(model=antenna_models[1], scale=0.001, parent=earth, color=color.red, position=position,
+                  texture=texture)
+
+position = lat_lon_to_3d(antenna_locations[1][0], antenna_locations[1][1], earth_radius*0.5)
+texture = None
+AustraliaMarker = marker(model=antenna_models[2], scale=0.001, parent=earth, color=color.red, position=position, texture=texture)
+AustraliaMarker.entity.show()
+mouse.locked = True
+
+position = lat_lon_to_3d(antenna_locations[3][0], antenna_locations[3][1], earth_radius*0.5)
+texture = None
+WPSA = marker(model=antenna_models[3], scale=0.001, parent=earth, color=color.red, position=position, texture=texture)
+WPSA.entity.show()
+
+antennas = [SpainMarker, CAMarker, AustraliaMarker, WPSA]
+CAMarker.entity.rotate((305,45,15),earth)
+SpainMarker.entity.rotate((385,45,40),earth)
+AustraliaMarker.entity.rotate((310,200,90), earth)
+WPSA.entity.rotate((45,300,30), earth)
+model_number = 1
+
 def update():
     global point_index, speed, points, distances, current, inter, colors,times,ci,phase, trajectory_line, distance
     # WASD camera movement
