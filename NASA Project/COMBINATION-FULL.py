@@ -121,11 +121,16 @@ points = [Vec3(a, b, s) * 0.000125 for a, b, s in
 
 def create_trajectory_line(c, x, y):
     global ci, points
-    scale_factor = 0.000125
 
     current = [points[x], points[y]]
-    line = Entity(model=Mesh(vertices=points, mode='line', thickness=2), color=c)
-    return line, current
+
+    if current[0].is_nan():
+        print("One of the values was NaN.")
+    elif current[1].is_nan():
+        print("Another one of the values was NaN.")
+    else:
+        line = Entity(model=Mesh(vertices=points, mode='line', thickness=2), color=c)
+        return line, current
 
 
 
