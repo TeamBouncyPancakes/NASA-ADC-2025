@@ -256,7 +256,7 @@ moon.cull_faces, moon.double_sided = False, True
 
 # Sky background
 Sky(texture="assets/textures-models/space-textures/space4.jpg")
-
+# sky
 # Define the Earth's radius
 earth_radius = 1.0  # The Earth's radius in your model is 1.0 unit (due to model scaling)
 
