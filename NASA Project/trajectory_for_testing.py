@@ -170,8 +170,8 @@ antenna3 = Text(text="3) "+antennas[2]['name']+" - "+str(antennas[2]['value']),x
 
 antenna4 = Text(text="4) "+antennas[3]['name']+" - "+str(antennas[3]['value']),x=0.65,y=-0.2,size=0.04,font='assets/fonts/SpaceMono-Regular.ttf',color=antennas[3]['color'])
 
-p_b = Button(icon='playbutton.png',scale=.25,x=0,y=-0.4,color=color.white)
-p_b.alpha = 0
+# p_b = Button(icon='playbutton.png',scale=.25,x=0,y=-0.4,color=color.white)
+# p_b.alpha = 0
 
 
 def length(x,y,z,x2,y2,z2):
