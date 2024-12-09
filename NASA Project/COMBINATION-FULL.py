@@ -6,6 +6,13 @@ from panda3d.core import FrameBufferProperties
 # Renamed to avoid conflict with Ursina's Texture
 from panda3d.core import Texture as p3dTexture
 from csv_funcs import *
+import platform
+
+os = platform.system()
+if os == "Darwin":
+    minimap = False
+else:
+    minimap = True
 
 app = Ursina(size=(1000, 500))
 
@@ -423,42 +430,47 @@ AustraliaMarker.entity.rotate((310,200,90), earth)
 WPSA.entity.rotate((45,300,30), earth)
 model_number = 1
 
-properties = FrameBufferProperties()
-properties.set_rgb_color(True)
-properties.set_rgba_bits(80, 8, 8, 8)
-properties.set_depth_bits(12)
-# Setup the texture to be rendered into.
-render_texture = p3dTexture()
-render_texture.set_format(p3dTexture.F_rgba32)
-render_texture.set_component_type(p3dTexture.T_float)
-# Make the buffer, if size is set to (0, 0), then it matches the window size.
-render_buffer = app.win.make_texture_buffer('render', 512, 2048, render_texture, False, properties)
-# Determines in what order rendering happens, you can pick any integer, see Panda3D render ordering.
-# Negative means before the rest of the normal scene is drawn.
-render_buffer.set_sort(-100)
-
-camera_pos = Entity(model="cube", position=(0, 10, 0), color=color.olive)
-camera_pos.hide()
-# New camera that copies the lens from the Ursina default camera,
-# and is rendering scene (all Ursina entities are attached to scene by default).
-render_camera = app.make_camera(render_buffer, lens=camera.lens, scene=scene)
-# render_camera.NodePath.
-render_camera.reparentTo(camera_pos)
-# To display the results of the render texture.
-minimap_texture = Texture(render_texture)
-
-outline = Entity(model="quad", parent=camera.ui, scale=0.41, texture="assets/minimap-stuffs/outline-bg.jpg",
-                 position=(0, 2, 0))
-
-minimapbg = Entity(model="quad", parent=camera.ui, scale=0.4, texture="assets/textures-models/space-textures/space4.jpg",
-            position=(0, 2, 0))
-
-quad = Entity(model='quad', texture=minimap_texture, parent=camera.ui, scale=0.4)
-# bg.always_on_top = False
-quad.always_on_top = True
+if minimap:
+    properties = FrameBufferProperties()
+    properties.set_rgb_color(True)
+    properties.set_rgba_bits(80, 8, 8, 8)
+    properties.set_depth_bits(12)
+    # Setup the texture to be rendered into.
+    render_texture = p3dTexture()
+    render_texture.set_format(p3dTexture.F_rgba32)
+    render_texture.set_component_type(p3dTexture.T_float)
+    # Make the buffer, if size is set to (0, 0), then it matches the window size.
+    render_buffer = app.win.make_texture_buffer('render', 512, 2048, render_texture, False, properties)
+    # Determines in what order rendering happens, you can pick any integer, see Panda3D render ordering.
+    # Negative means before the rest of the normal scene is drawn.
+    render_buffer.set_sort(-100)
 
 
-ui_objs = [logo, viewer_button, quit_button, play_button, viewer_text, play_text, quit_text, subtitle, menu_text, bg, quad, minimapbg]
+    camera_pos = Entity(model="cube", position=(0, 10, 0), color=color.olive)
+    camera_pos.hide()
+    # New camera that copies the lens from the Ursina default camera,
+    # and is rendering scene (all Ursina entities are attached to scene by default).
+    render_camera = app.make_camera(render_buffer, lens=camera.lens, scene=scene)
+    # render_camera.NodePath.
+    render_camera.reparentTo(camera_pos)
+    # To display the results of the render texture.
+    minimap_texture = Texture(render_texture)
+
+    outline = Entity(model="quad", parent=camera.ui, scale=0.41, texture="assets/minimap-stuffs/outline-bg.jpg",
+                     position=(0, 2, 0))
+
+    minimapbg = Entity(model="quad", parent=camera.ui, scale=0.4, texture="assets/textures-models/space-textures/space4.jpg",
+                position=(0, 2, 0))
+
+    quad = Entity(model='quad', texture=minimap_texture, parent=camera.ui, scale=0.4)
+    # bg.always_on_top = False
+    quad.always_on_top = True
+
+
+ui_objs = [logo, viewer_button, quit_button, play_button, viewer_text, play_text, quit_text, subtitle, menu_text, bg]
+if minimap:
+    ui_objs.append(minimapbg)
+    ui_objs.append(quad)
 non_ui = [trajectory_line, earth, moon, space_bg]
 for antenna in antennas:
     non_ui.append(antenna)
@@ -786,12 +798,14 @@ def update():
     #
     # prioritization_circle_identifier.x = window.top_left.x + prioritization_circle_identifier.scale.x * 0.5
     # prioritization_circle_identifier.y = window.top_left.y - prioritization_circle_identifier.scale.y * 0.5
-    quad.x = window.bottom_right.x - quad.scale.x * 0.5
-    quad.y = window.bottom_right.y + quad.scale.y * 0.5
-    bg.x = window.bottom_right.x - bg.scale.x * 0.5
-    bg.y = window.bottom_right.y + bg.scale.y * 0.5
-    outline.x = window.bottom_right.x - outline.scale.x * 0.5
-    outline.y = window.bottom_right.y + outline.scale.y * 0.5
+    if minimap:
+        quad.x = window.bottom_right.x - quad.scale.x * 0.5
+
+        quad.y = window.bottom_right.y + quad.scale.y * 0.5
+        bg.x = window.bottom_right.x - bg.scale.x * 0.5
+        bg.y = window.bottom_right.y + bg.scale.y * 0.5
+        outline.x = window.bottom_right.x - outline.scale.x * 0.5
+        outline.y = window.bottom_right.y + outline.scale.y * 0.5
 
     none_active = "None active"
     assets_prefix = "assets/antenna-prioritization/"
