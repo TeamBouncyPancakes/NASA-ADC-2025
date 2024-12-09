@@ -9,6 +9,8 @@ from csv_funcs import *
 import platform
 import os
 
+window.icon = "icon.ico"
+
 os_ = platform.system()
 if os_ == "Darwin":
     minimap = False
