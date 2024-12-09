@@ -73,6 +73,9 @@ def update():
     capsule_entity.rotation_y += 1
     service_module_entity.rotation_y += 1
 
+    if held_keys['esc']:
+        quit()
+
 
 
 #     if held_keys['up arrow']:
