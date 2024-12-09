@@ -7,9 +7,10 @@ from panda3d.core import FrameBufferProperties
 from panda3d.core import Texture as p3dTexture
 from csv_funcs import *
 import platform
+import os
 
-os = platform.system()
-if os == "Darwin":
+os_ = platform.system()
+if os_ == "Darwin":
     minimap = False
 else:
     minimap = True
@@ -97,7 +98,8 @@ quit_button.on_click = application.quit
 viewer_button = Button(
     scale=(0.3, 0.1),
     position=(0, -0.1),
-    color=color.white
+    color=color.white,
+    on_click=lambda: os.system("python3 UI_modelpage.py")
 )  # view models button
 viewer_button.highlight_color = color.gray
 viewer_button.text_entity = viewer_text
