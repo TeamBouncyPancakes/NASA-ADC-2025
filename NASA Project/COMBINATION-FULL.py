@@ -793,7 +793,14 @@ def update():
         distance = 0
         current = [points[0], points[1]]
         # scene.clear()
-
+    if os == "Darwin":
+        minimap = False
+    else:
+        minimap = True
+        if ui_visible:
+            minimap = False
+        else:
+            minimap = True
     global n
     n += 1
     # bg_for_circle_identifier.x = window.top_left.x + bg_for_circle_identifier.scale.x * 0.5
