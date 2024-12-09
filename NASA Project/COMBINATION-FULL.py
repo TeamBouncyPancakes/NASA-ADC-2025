@@ -29,8 +29,8 @@ test = np.array(x_velocity ** 2 + y_velocity ** 2 + z_velocity ** 2)
 overall_velocity = np.array(np.sqrt(test))
 scale_factor = 0.000125
 
-colors = [color.red,color.cyan,color.green,color.gold,color.pink,color.yellow,color.orange,color.brown,color.azure,color.lime]
-
+colors = [color.red, color.cyan, color.green, color.gold, color.pink, color.yellow, color.orange, color.brown,
+          color.azure, color.lime]
 
 bg = Sprite(
     'assets/textures-models/space-textures/moonbg.jpg',
@@ -147,14 +147,12 @@ def create_trajectory_line(c, x, y):
     vertices = current  # Start and end points for the line
     line = Entity(
         model=Mesh(vertices=vertices, mode='line', thickness=2),  # Create a line model
-        color=c, # Optional scaling
+        color=c,  # Optional scaling
     )
 
     # print('Drew line.')
 
     return line, current
-
-
 
 
 index = 1
@@ -165,14 +163,14 @@ editor_camera = EditorCamera(pan_speed=1000)
 # app.run()
 
 
-
 point_index = 0
 overall_velocity = overall_velocity * 0.001
 speed = overall_velocity[0]
 distance = 0
 phase = "None"
 
-distanceup = Text(text="Distance Travelled (km):", x=-0.97, y=0.37, size=0.02, font='assets/fonts/SpaceMono-Regular.ttf')
+distanceup = Text(text="Distance Travelled (km):", x=-0.97, y=0.37, size=0.02,
+                  font='assets/fonts/SpaceMono-Regular.ttf')
 distancetotal = Text(text=str(distance), x=-0.97, y=0.33, size=0.04, font='assets/fonts/SpaceMono-Regular.ttf')
 distancetotal._eternal = True
 distanceup._eternal = True
@@ -196,79 +194,76 @@ timeup._eternal = True
 timeup.alpha = 0
 timelabel.alpha = 0
 
-wh = Entity(model = 'quad',color=color.white,scale=(0.1,0.1),position=(-0.6,0.1), parent=camera.ui)
+wh = Entity(model='quad', color=color.white, scale=(0.1, 0.1), position=(-0.6, 0.1), parent=camera.ui)
 
 wh.alpha = 0
 
-key1 = Text(text="Color Key (Phases):",x=-0.97,y=0.15,size=0.02,font='assets/fonts/SpaceMono-Regular.ttf')
+key1 = Text(text="Color Key (Phases):", x=-0.97, y=0.15, size=0.02, font='assets/fonts/SpaceMono-Regular.ttf')
 
 key1.alpha = 0
 
-key2a = Text(text="Launch:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
-key2b = Entity(model='quad',color=color.red,scale = (0.075,0.075),position=(-0.6,0.1), parent=camera.ui)
+key2a = Text(text="Launch:", x=-0.97, y=0.1, font='assets/fonts/SpaceMono-Regular.ttf', size=0.03)
+key2b = Entity(model='quad', color=color.red, scale=(0.075, 0.075), position=(-0.6, 0.1), parent=camera.ui)
 
 key2a.alpha = 0
 key2b.alpha = 0
 
-key3a = Text(text="Initital Firing:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
-key3b = Entity(model='quad',color=color.cyan,scale = (0.075,0.075),position=(-0.6,0.1), parent=camera.ui)
-
+key3a = Text(text="Initital Firing:", x=-0.97, y=0.1, font='assets/fonts/SpaceMono-Regular.ttf', size=0.03)
+key3b = Entity(model='quad', color=color.cyan, scale=(0.075, 0.075), position=(-0.6, 0.1), parent=camera.ui)
 
 key3a.alpha = 0
 key3b.alpha = 0
 
-key4a = Text(text="Orion Separation:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
-key4b = Entity(model='quad',color=color.green,scale = (0.075,0.075),position=(-0.6,0.1), parent=camera.ui)
+key4a = Text(text="Orion Separation:", x=-0.97, y=0.1, font='assets/fonts/SpaceMono-Regular.ttf', size=0.03)
+key4b = Entity(model='quad', color=color.green, scale=(0.075, 0.075), position=(-0.6, 0.1), parent=camera.ui)
 
 key4a.alpha = 0
 key4b.alpha = 0
 
-key5a = Text(text="Subsequent Burning:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
-key5b = Entity(model='quad',color=color.gold,scale = (0.075,0.075),position=(-0.6,0.1), parent=camera.ui)
+key5a = Text(text="Subsequent Burning:", x=-0.97, y=0.1, font='assets/fonts/SpaceMono-Regular.ttf', size=0.03)
+key5b = Entity(model='quad', color=color.gold, scale=(0.075, 0.075), position=(-0.6, 0.1), parent=camera.ui)
 
 key5a.alpha = 0
 key5b.alpha = 0
 
-key6a = Text(text="Life Systems Check:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
-key6b = Entity(model='quad',color=color.pink,scale = (0.075,0.075),position=(-0.6,0.1), parent=camera.ui)
+key6a = Text(text="Life Systems Check:", x=-0.97, y=0.1, font='assets/fonts/SpaceMono-Regular.ttf', size=0.03)
+key6b = Entity(model='quad', color=color.pink, scale=(0.075, 0.075), position=(-0.6, 0.1), parent=camera.ui)
 
 key6a.alpha = 0
 key6b.alpha = 0
 
-key7a = Text(text="Burn Fuel:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
-key7b = Entity(model='quad',color=color.yellow,scale = (0.075,0.075),position=(-0.6,0.1), parent=camera.ui)
+key7a = Text(text="Burn Fuel:", x=-0.97, y=0.1, font='assets/fonts/SpaceMono-Regular.ttf', size=0.03)
+key7b = Entity(model='quad', color=color.yellow, scale=(0.075, 0.075), position=(-0.6, 0.1), parent=camera.ui)
 
 key7a.alpha = 0
 key7b.alpha = 0
 
-key8a = Text(text="Translunar Injection:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.02)
-key8b = Entity(model='quad',color=color.orange,position=(-0.6,0.1),scale = (0.075,0.075), parent=camera.ui)
+key8a = Text(text="Translunar Injection:", x=-0.97, y=0.1, font='assets/fonts/SpaceMono-Regular.ttf', size=0.02)
+key8b = Entity(model='quad', color=color.orange, position=(-0.6, 0.1), scale=(0.075, 0.075), parent=camera.ui)
 
 key8a.alpha = 0
 key8b.alpha = 0
 
-key9a = Text(text="Translunar Outbound:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
-key9b = Entity(model='quad',color=color.brown,scale = (0.075,0.075),position=(-0.6,0.1), parent=camera.ui)
-
+key9a = Text(text="Translunar Outbound:", x=-0.97, y=0.1, font='assets/fonts/SpaceMono-Regular.ttf', size=0.03)
+key9b = Entity(model='quad', color=color.brown, scale=(0.075, 0.075), position=(-0.6, 0.1), parent=camera.ui)
 
 key9a.alpha = 0
 key9b.alpha = 0
 
-key0a = Text(text="Return:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
-key0b = Entity(model='quad',color=color.azure,scale = (0.075,0.075),position=(-0.6,0.1), parent=camera.ui)
-
+key0a = Text(text="Return:", x=-0.97, y=0.1, font='assets/fonts/SpaceMono-Regular.ttf', size=0.03)
+key0b = Entity(model='quad', color=color.azure, scale=(0.075, 0.075), position=(-0.6, 0.1), parent=camera.ui)
 
 key0a.alpha = 0
 key0b.alpha = 0
 
-key15a = Text(text="Landing:",x=-0.97,y=0.1,font='assets/fonts/SpaceMono-Regular.ttf',size=0.03)
-key15b = Entity(model='quad',color=color.lime,scale = (0.075,0.075),position=(-0.6,0.1), parent=camera.ui)
-
+key15a = Text(text="Landing:", x=-0.97, y=0.1, font='assets/fonts/SpaceMono-Regular.ttf', size=0.03)
+key15b = Entity(model='quad', color=color.lime, scale=(0.075, 0.075), position=(-0.6, 0.1), parent=camera.ui)
 
 key15a.alpha = 0
 key15b.alpha = 0
 
-keys = {key2a:key2b,key3a:key3b,key4a:key4b,key5a:key5b,key6a:key6b,key7a:key7b,key8a:key8b,key9a:key9b,key0a:key0b,key15a:key15b}
+keys = {key2a: key2b, key3a: key3b, key4a: key4b, key5a: key5b, key6a: key6b, key7a: key7b, key8a: key8b, key9a: key9b,
+        key0a: key0b, key15a: key15b}
 
 ## POSSIBLE USE FOR DEBUG
 # xlabel = Text(text="X: "+str(points[0][0]/0.000125),x=-0.75,y=0.47)
@@ -279,6 +274,7 @@ keys = {key2a:key2b,key3a:key3b,key4a:key4b,key5a:key5b,key6a:key6b,key7a:key7b,
 # zlabel._eternal = True
 
 distances = []
+
 
 # antennas = antennas = [{'name':'WPSA','value':1000,'color':color.red},{'name':'DS54','value':800,'color':color.azure},{'name':'DS24','value':600,'color':color.green},{'name':'DS34','value':400,'color':color.orange}]
 
@@ -333,11 +329,7 @@ def clean_line(current, next, f):
 
 ui_visible = False
 
-
-
-
 inter = 0.75
-
 
 
 class Planet:
@@ -353,13 +345,14 @@ moon.cull_faces, moon.double_sided = False, True
 space_bg = Sky(texture="assets/textures-models/space-textures/space4.jpg")
 
 antenna_locations = [
-    (35.3399, -116.875), # California
-    (-35.5985, 148.982), # Australia
-    (40.5276, -4.5271), # Spain
+    (35.3399, -116.875),  # California
+    (-35.5985, 148.982),  # Australia
+    (40.5276, -4.5271),  # Spain
     (106.5364, 32.7804)
 ]
 
 earth_radius = 1.0  # The Earth's radius in your model is 1.0 unit (due to model scaling)
+
 
 def lat_lon_to_3d(lat, lon, radius):
     """Convert latitude and longitude to 3D coordinates on a sphere."""
@@ -384,7 +377,8 @@ camera.fov = 100
 
 
 class marker:
-    def __init__(self, position=(0,0,0), color=color.white, scale=0.0005, parent=None, texture=None, model=load_model('assets/textures-models/antenna-stuff/Antenna_model')):
+    def __init__(self, position=(0, 0, 0), color=color.white, scale=0.0005, parent=None, texture=None,
+                 model=load_model('assets/textures-models/antenna-stuff/Antenna_model')):
         self.pos = position
         self.color = color
         self.scale = scale
@@ -394,40 +388,43 @@ class marker:
 
     @property
     def entity(self):
-        entity = Entity(color=self.color, scale=self.scale, parent=self.parent, texture=self.texture, model=self.model, position=self.pos)
+        entity = Entity(color=self.color, scale=self.scale, parent=self.parent, texture=self.texture, model=self.model,
+                        position=self.pos)
 
         return entity
 
     def update(self):
         self.entity.look_at(camera)
 
-position = lat_lon_to_3d(antenna_locations[2][0], antenna_locations[2][1], earth_radius*0.5)
+
+position = lat_lon_to_3d(antenna_locations[2][0], antenna_locations[2][1], earth_radius * 0.5)
 texture = None
-SpainMarker = marker(model=antenna_models[0], scale=0.001, parent=earth, color=color.red, position=position, texture=texture)
+SpainMarker = marker(model=antenna_models[0], scale=0.001, parent=earth, color=color.red, position=position,
+                     texture=texture)
 SpainMarker.entity.show()
 
-position = lat_lon_to_3d(antenna_locations[0][0], antenna_locations[0][1], earth_radius*0.5)
+position = lat_lon_to_3d(antenna_locations[0][0], antenna_locations[0][1], earth_radius * 0.5)
 texture = None
-CAMarker = marker(model=antenna_models[1], scale=0.001, parent=earth, color=color.red, position=position, texture=texture)
+CAMarker = marker(model=antenna_models[1], scale=0.001, parent=earth, color=color.red, position=position,
+                  texture=texture)
 CAMarker.entity.show()
 
-
-position = lat_lon_to_3d(antenna_locations[1][0], antenna_locations[1][1], earth_radius*0.5)
+position = lat_lon_to_3d(antenna_locations[1][0], antenna_locations[1][1], earth_radius * 0.5)
 texture = None
-AustraliaMarker = marker(model=antenna_models[2], scale=0.001, parent=earth, color=color.red, position=position, texture=texture)
+AustraliaMarker = marker(model=antenna_models[2], scale=0.001, parent=earth, color=color.red, position=position,
+                         texture=texture)
 AustraliaMarker.entity.show()
 
-position = lat_lon_to_3d(antenna_locations[3][0], antenna_locations[3][1], earth_radius*0.5)
+position = lat_lon_to_3d(antenna_locations[3][0], antenna_locations[3][1], earth_radius * 0.5)
 texture = None
 WPSA = marker(model=antenna_models[3], scale=0.001, parent=earth, color=color.red, position=position, texture=texture)
 WPSA.entity.show()
 
-
 antennas = [SpainMarker, CAMarker, AustraliaMarker, WPSA]
-CAMarker.entity.rotate((305,45,15),earth)
-SpainMarker.entity.rotate((385,45,40),earth)
-AustraliaMarker.entity.rotate((310,200,90), earth)
-WPSA.entity.rotate((45,300,30), earth)
+CAMarker.entity.rotate((305, 45, 15), earth)
+SpainMarker.entity.rotate((385, 45, 40), earth)
+AustraliaMarker.entity.rotate((310, 200, 90), earth)
+WPSA.entity.rotate((45, 300, 30), earth)
 model_number = 1
 
 if minimap:
@@ -445,7 +442,6 @@ if minimap:
     # Negative means before the rest of the normal scene is drawn.
     render_buffer.set_sort(-100)
 
-
     camera_pos = Entity(model="cube", position=(0, 10, 0), color=color.olive)
     camera_pos.hide()
     # New camera that copies the lens from the Ursina default camera,
@@ -459,13 +455,13 @@ if minimap:
     outline = Entity(model="quad", parent=camera.ui, scale=0.41, texture="assets/minimap-stuffs/outline-bg.jpg",
                      position=(0, 2, 0))
 
-    minimapbg = Entity(model="quad", parent=camera.ui, scale=0.4, texture="assets/textures-models/space-textures/space4.jpg",
-                position=(0, 2, 0))
+    minimapbg = Entity(model="quad", parent=camera.ui, scale=0.4,
+                       texture="assets/textures-models/space-textures/space4.jpg",
+                       position=(0, 2, 0))
 
     quad = Entity(model='quad', texture=minimap_texture, parent=camera.ui, scale=0.4)
     # bg.always_on_top = False
     quad.always_on_top = True
-
 
 ui_objs = [logo, viewer_button, quit_button, play_button, viewer_text, play_text, quit_text, subtitle, menu_text, bg]
 if minimap:
@@ -497,36 +493,36 @@ def ui_off(manual=False):
     ui_visible = False
     # print("UI off") if not manual else print("FORCE BUTTON UI OFF")
 
-ui_on()
 
+ui_on()
 
 # loading orion modules
 slsbody = load_model('assets/textures-models/orion-models/orion_nasa_sls_body.glb')
-slsbody_entity = Entity(model = slsbody, scale = (0.12,0.12,0.12))
+slsbody_entity = Entity(model=slsbody, scale=(0.12, 0.12, 0.12))
 slsbody_entity.rotation_z = 180
 slsbody_entity.y = 0.45
 slsnose = load_model('assets/textures-models/orion-models/orionmpcv.glb')
-slsnose_entity = Entity(model = slsnose, scale = (0.12,0.12,0.12))
+slsnose_entity = Entity(model=slsnose, scale=(0.12, 0.12, 0.12))
 slsnose_entity.y = 10
 icps = load_model('assets/textures-models/orion-models/icpstextured.glb')
 service_module = load_model('assets/textures-models/orion-models/servicemoduletextured.glb')
 capsule = load_model('assets/textures-models/orion-models/orioncapsuletextured.glb')
-capsule_entity = Entity(model=capsule, position=(-1.7,3.21,-0.18))
-service_module_entity = Entity(model=service_module, scale = 1, position=(-3.5,1.2,0))
-orion = Entity(scale = (0.2,0.2,0.2))
-orion.position=(0, 0, 0)
+capsule_entity = Entity(model=capsule, position=(-1.7, 3.21, -0.18))
+service_module_entity = Entity(model=service_module, scale=1, position=(-3.5, 1.2, 0))
+orion = Entity(scale=(0.2, 0.2, 0.2))
+orion.position = (0, 0, 0)
 capsule_entity.parent = orion
 service_module_entity.parent = orion
-icps_entity = Entity(model=icps, scale=0.008, position = (-0.33,0.3,0))
+icps_entity = Entity(model=icps, scale=0.008, position=(-0.33, 0.3, 0))
 icps_entity.rotation_x = -90
-orion_maste = Entity(scale = (1,1,1))
+orion_maste = Entity(scale=(1, 1, 1))
 icps_entity.parent = orion_maste
 orion.parent = orion_maste
 # sls.parent = orion_maste   
 orion_maste.y = 9.8
 orion_maste.x = 0.33
-g_scale =0.2
-orion_master = Entity(scale = (g_scale,g_scale,g_scale))
+g_scale = 0.2
+orion_master = Entity(scale=(g_scale, g_scale, g_scale))
 slsbody_entity.parent = orion_master
 slsnose_entity.parent = orion_master
 orion_maste.parent = orion_master
@@ -536,54 +532,60 @@ orion_master.rotation_z = -90
 light = DirectionalLight(parent=orion_master)
 light.look_at(orion_master)
 
+
 def median_filter(points, window_size=3):
     smoothed_points = []
     for i in range(len(points)):
         # Define the window range: from max(0, i - window_size//2) to min(len(points), i + window_size//2)999
         start = max(0, i - window_size // 2)
         end = min(len(points), i + window_size // 2 + 1)
-        
+
         # Extract the window of points
         window = points[start:end]
-        
+
         # Apply median filter to each dimension (x, y, z)
         window_x = [p[0] for p in window]
         window_y = [p[1] for p in window]
         window_z = [p[2] for p in window]
-        
+
         # Calculate the median for each dimension
         median_x = np.median(window_x)
         median_y = np.median(window_y)
         median_z = np.median(window_z)
-        
+
         # Create a new smoothed point using the median values
         smoothed_point = Vec3(median_x, median_y, median_z)
         smoothed_points.append(smoothed_point)
-    
+
     return smoothed_points
+
 
 points_array = median_filter(points, 30)
 
-#points = points_array
 
-def separate(e1,e2):
-        e1.parent = None
-        e2.parent = None
+# points = points_array
 
-def translate_orion(e , x , y , z):
-     e.x += x
-     e.y += y
-     e.z += z
+def separate(e1, e2):
+    e1.parent = None
+    e2.parent = None
+
+
+def translate_orion(e, x, y, z):
+    e.x += x
+    e.y += y
+    e.z += z
+
 
 ambient_light = AmbientLight()
 ambient_light.intensity = 0.5
 
 print(camera.position)
 
+
 def update():
-    camera.position = (0,0,-20)
+    camera.position = (0, 0, -20)
     camera.look_at(orion_master)
-    camera.position = (0,0,-20)
+    camera.position = (0, 0, -20)
     if ui_visible:
         editor_camera.enabled = False
         editor_camera.position = (0, 0, -10)
@@ -606,17 +608,16 @@ def update():
         quit()
 
     if point_index < len(points):
-        currents = points[point_index+2]
+        currents = points[point_index + 2]
         previous = points[point_index]
         if point_index + 1 == len(points):
             next = points[0]
         else:
             next = points[point_index + 1]
 
-        #intergrating orion onto trajectory
+        # intergrating orion onto trajectory
         direction = (currents - previous).normalized()
         orion_master.position += direction * 1 * time.dt
-
 
         if direction.length() > 0:
             # Calculate the angle in radians
@@ -626,10 +627,10 @@ def update():
             # Update the front's orientation to match the direction of movement
             tp = orion_master.position + direction
             orion_master.look_at(tp)
-            if orion_master.rotation_y>0:
-                orion_master.rotation_y+=90
+            if orion_master.rotation_y > 0:
+                orion_master.rotation_y += 90
             else:
-                orion_master.rotation_y-=90
+                orion_master.rotation_y -= 90
 
         if 8 <= times[point_index] < 48.23658:
             ci = 0
@@ -638,83 +639,83 @@ def update():
         elif 48.23658 <= float(times[point_index]) < 100.1082:
             ci = 1
             phase = "Initial firing"
-            m,j = o[ci]
+            m, j = o[ci]
             m.alpha = 1
             j.alpha = 1
-            k,i = o[ci-1]
+            k, i = o[ci - 1]
             k.alpha = 0
             i.alpha = 0
         elif 100.1082 <= float(times[point_index]) < 196.0945:
             ci = 2
             phase = "Orion separates from ICPS"
-            m,j = o[ci]
+            m, j = o[ci]
             m.alpha = 1
             j.alpha = 1
-            k,i = o[ci-1]
+            k, i = o[ci - 1]
             k.alpha = 0
             i.alpha = 0
         elif 196.0945 <= float(times[point_index]) < 283.6495:
             ci = 3
             phase = "Subsequent burning of fuel for higher orbit"
-            m,j = o[ci]
+            m, j = o[ci]
             m.alpha = 1
             j.alpha = 1
-            k,i = o[ci-1]
+            k, i = o[ci - 1]
             k.alpha = 0
             i.alpha = 0
         elif 283.6495 <= float(times[point_index]) < 792.4494:
             ci = 4
             phase = "Life Systems Check/Orion USS Burn"
-            m,j = o[ci]
+            m, j = o[ci]
             m.alpha = 1
             j.alpha = 1
-            k,i = o[ci-1]
+            k, i = o[ci - 1]
             k.alpha = 0
             i.alpha = 0
         elif 792.4494 <= float(times[point_index]) < 1487.65:
             ci = 5
             phase = "Life Systems Check/Burn Fuel"
-            m,j = o[ci]
+            m, j = o[ci]
             m.alpha = 1
             j.alpha = 1
-            k,i = o[ci-1]
+            k, i = o[ci - 1]
             k.alpha = 0
             i.alpha = 0
         elif 1487.65 <= float(times[point_index]) < 6150.25142:
             ci = 6
             phase = "TransLunar Injection Propells to Moon"
-            m,j = o[ci]
+            m, j = o[ci]
             m.alpha = 1
             j.alpha = 1
-            k,i = o[ci-1]
+            k, i = o[ci - 1]
             k.alpha = 0
             i.alpha = 0
         elif 6150.25142 <= float(times[point_index]) < 7200.25142:
             ci = 7
             phase = 'Translunar Outbound'
-            
-            m,j = o[ci]
+
+            m, j = o[ci]
             m.alpha = 1
             j.alpha = 1
-            k,i = o[ci-1]
+            k, i = o[ci - 1]
             k.alpha = 0
             i.alpha = 0
         elif 7200.25142 <= float(times[point_index]) < 10150.16998:
             ci = 8
             phase = 'Return to Earth'
-            m,j = o[ci]
+            m, j = o[ci]
             m.alpha = 1
             j.alpha = 1
-            k,i = o[ci-1]
+            k, i = o[ci - 1]
             k.alpha = 0
             i.alpha = 0
         elif 12690 <= float(times[point_index]):
             ci = 9
             phase = 'Landing'
-            m,j = o[ci]
+            m, j = o[ci]
             m.alpha = 1
             j.alpha = 1
-            k,i = o[ci-1]
+            k, i = o[ci - 1]
             k.alpha = 0
             i.alpha = 0
 
@@ -723,28 +724,26 @@ def update():
             h *= 60
             h = h / 25960.633996
 
-        if ci >=2:
+        if ci >= 2:
             separate(slsnose_entity, slsbody_entity)
             slsnose_entity.z -= 0.5
             slsbody_entity.z -= 0.5
-            orion_maste.position=Vec3(0,0,0)
+            orion_maste.position = Vec3(0, 0, 0)
 
-        if ci>=6:
-            icps_entity.parent=None
+        if ci >= 6:
+            icps_entity.parent = None
             icps_entity.z -= 0.5
-            orion_maste.position=Vec3(0,0,0)
+            orion_maste.position = Vec3(0, 0, 0)
 
-        if ci>=9:
-            orion_capsule.parent=None
+        if ci >= 9:
+            orion_capsule.parent = None
             orion_capsule.z -= 0.5
-            orion_maste.position=Vec3(0,0,0)
+            orion_maste.position = Vec3(0, 0, 0)
 
-
-        
         # xlabel.text="X: "+str(round(points[point_index][0],5)/0.000125)
         # ylabel.text="Y: "+str(round(points[point_index][1],5)/0.000125)
         # zlabel.text="Z: "+str(round(points[point_index][2],5)/0.000125)
-        
+
         # print('Completed')
         # print(ci)
         if ui_visible:
@@ -757,22 +756,22 @@ def update():
             phaselabel.alpha = 1
             timeup.alpha = 1
             timelabel.alpha = 1
-            key1.alpha  = 1
-            orion_master.position =  Vec3(currents.x,currents.y,currents.z) #clean_line(currents, next, inter)
+            key1.alpha = 1
+            orion_master.position = Vec3(currents.x, currents.y, currents.z)  # clean_line(currents, next, inter)
             speed = overall_velocity[point_index]
-            x,y,z = orion_master.position
-            x2,y2,z2 = next
+            x, y, z = orion_master.position
+            x2, y2, z2 = next
 
             current.append(points[point_index + 1])
 
             distance += length(x, y, z, x2, y2, z2)
             distance = np.round(distance, 2)
             distances.append(distance)
-            if point_index+1 != len(points):
+            if point_index + 1 != len(points):
                 a = Mesh(vertices=current, mode='line', thickness=2)
                 trajectory_line.model = a
-    #        else:
-    #            point_index = 0
+            #        else:
+            #            point_index = 0
             #  trajectory_line.alpha = 0
             distancetotal.text = str(distance)
             timelabel.text = str(float(times[point_index]))
@@ -786,7 +785,7 @@ def update():
                 point_index += 1
         # point_index += int(speed*len(points)/5.301)
 
-        
+
     else:
         point_index = 0
         speed = overall_velocity[0]
@@ -821,7 +820,6 @@ def update():
     assets_prefix = "assets/antenna-prioritization/"
     neutral_png = assets_prefix + "neutral.png"
 
-
     # if not toggle:
     #     if csv_to_antenna(n) != none_active:
     #         prioritization_circle_identifier.texture = str(assets_prefix + str(csv_to_antenna(n)) + ".png")
@@ -834,14 +832,17 @@ def update():
     #     else:
     #         prioritization_circle_identifier.texture = neutral_png
 
+
 def start():
     app.run()
+
+
 n = 0
 
 try:
     start()
-    
+
 
 except Exception as e:
-    print(e,"ERRRRRRRRRROEEEEEEEE")
+    print(e, "ERRRRRRRRRROEEEEEEEE")
 
