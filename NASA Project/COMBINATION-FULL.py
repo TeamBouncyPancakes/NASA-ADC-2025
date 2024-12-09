@@ -375,6 +375,16 @@ antenna_models = [
 
 camera.fov = 100
 
+prioritization_circle_identifier = Entity(model='quad', texture="assets/antenna-prioritization/neutral2.png",
+                                          parent=camera.ui, scale=0.2)
+bg_for_circle_identifier = Entity(model='quad', texture="assets/antenna-prioritization/bg.png", parent=camera.ui,
+                                  scale=0.21)
+
+prioritization_circle_identifier.always_on_top = True
+# prioritization_circle_identifier.reparentTo(camera)
+# camera_pos.visible = False
+n = 0
+toggle = True
 
 class marker:
     def __init__(self, position=(0, 0, 0), color=color.white, scale=0.0005, parent=None, texture=None,
@@ -459,14 +469,14 @@ if minimap:
                        texture="assets/textures-models/space-textures/space4.jpg",
                        position=(0, 2, 0))
 
-    quad = Entity(model='quad', texture=minimap_texture, parent=camera.ui, scale=0.4)
+    minimap_quad = Entity(model='quad', texture=minimap_texture, parent=camera.ui, scale=0.4)
     # bg.always_on_top = False
-    quad.always_on_top = True
+    minimap_quad.always_on_top = True
 
 ui_objs = [logo, viewer_button, quit_button, play_button, viewer_text, play_text, quit_text, subtitle, menu_text, bg]
 if minimap:
     ui_objs.append(minimapbg)
-    ui_objs.append(quad)
+    ui_objs.append(minimap_quad)
 non_ui = [trajectory_line, earth, moon, space_bg]
 for antenna in antennas:
     non_ui.append(antenna)
@@ -800,15 +810,17 @@ def update():
             minimap = True
     global n
     n += 1
-    # bg_for_circle_identifier.x = window.top_left.x + bg_for_circle_identifier.scale.x * 0.5
-    # bg_for_circle_identifier.y = window.top_left.y - bg_for_circle_identifier.scale.y * 0.5
-    #
-    # prioritization_circle_identifier.x = window.top_left.x + prioritization_circle_identifier.scale.x * 0.5
-    # prioritization_circle_identifier.y = window.top_left.y - prioritization_circle_identifier.scale.y * 0.5
-    if minimap:
-        quad.x = window.bottom_right.x - quad.scale.x * 0.5
 
-        quad.y = window.bottom_right.y + quad.scale.y * 0.5
+    bg_for_circle_identifier.x = window.bottom_left.x + bg_for_circle_identifier.scale.x * 0.5
+    bg_for_circle_identifier.y = window.bottom_left.y + bg_for_circle_identifier.scale.y * 0.5
+
+    prioritization_circle_identifier.x = window.bottom_left.x + prioritization_circle_identifier.scale.x * 0.5
+    prioritization_circle_identifier.y = window.bottom_left.y + prioritization_circle_identifier.scale.y * 0.5
+
+    if minimap:
+        minimap_quad.x = window.bottom_right.x - minimap_quad.scale.x * 0.5
+
+        minimap_quad.y = window.bottom_right.y + minimap_quad.scale.y * 0.5
         bg.x = window.bottom_right.x - bg.scale.x * 0.5
         bg.y = window.bottom_right.y + bg.scale.y * 0.5
         outline.x = window.bottom_right.x - outline.scale.x * 0.5
@@ -818,17 +830,17 @@ def update():
     assets_prefix = "assets/antenna-prioritization/"
     neutral_png = assets_prefix + "neutral.png"
 
-    # if not toggle:
-    #     if csv_to_antenna(n) != none_active:
-    #         prioritization_circle_identifier.texture = str(assets_prefix + str(csv_to_antenna(n)) + ".png")
-    #     else:
-    #         prioritization_circle_identifier.texture = neutral_png
-    # else:
-    #     should_look = look_forwards(10, n)
-    #     if should_look != none_active:
-    #         prioritization_circle_identifier.texture = str(assets_prefix + str(should_look) + ".png")
-    #     else:
-    #         prioritization_circle_identifier.texture = neutral_png
+    if not toggle:
+        if csv_to_antenna(n) != none_active:
+            prioritization_circle_identifier.texture = str(assets_prefix + str(csv_to_antenna(n)) + ".png")
+        else:
+            prioritization_circle_identifier.texture = neutral_png
+    else:
+        should_look = look_forwards(10, n)
+        if should_look != none_active:
+            prioritization_circle_identifier.texture = str(assets_prefix + str(should_look) + ".png")
+        else:
+            prioritization_circle_identifier.texture = neutral_png
 
 
 def start():
