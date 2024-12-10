@@ -32,6 +32,50 @@ test = np.array(x_velocity ** 2 + y_velocity ** 2 + z_velocity ** 2)
 overall_velocity = np.array(np.sqrt(test))
 scale_factor = 0.000125
 
+class ToggleButton(Button):
+    def __init__(self, position=(0, 0), **kwargs):
+        super().__init__(**kwargs)
+        
+
+        self.scale = (0.1, 0.05) 
+        self.position = position
+        self.color = color.white  
+
+
+        # Create the lever that will move from left to right
+        self.lever = Button(
+            model="quad",
+            color=color.green,
+            scale=(0.25, 0.8),  
+            position=(-0.375, 0),  
+            parent=self,
+            text="",
+            collider="box"
+        )
+
+
+        self.is_on = True
+
+
+    def on_click(self):
+
+        self.is_on = not self.is_on
+
+        if not self.is_on:
+
+            self.lever.position = (0.375, 0)
+            self.lever.color = color.red
+            self.color = color.white 
+            self.cube.alpha = 1  
+            self.sphere.alpha = 0  
+        else:
+          
+            self.lever.position = (-0.375, 0)
+            self.lever.color = color.green  
+            self.color = color.white  
+            self.cube.alpha = 0  
+            self.sphere.alpha = 1  
+
 colors = [color.red, color.cyan, color.green, color.gold, color.pink, color.yellow, color.orange, color.brown,
           color.azure, color.lime]
 
@@ -279,6 +323,8 @@ keys = {key2a: key2b, key3a: key3b, key4a: key4b, key5a: key5b, key6a: key6b, ke
 
 distances = []
 
+toggle_button = ToggleButton(position=(-0.90, -0.25))
+toggle_button.visible = False
 
 # antennas = antennas = [{'name':'WPSA','value':1000,'color':color.red},{'name':'DS54','value':800,'color':color.azure},{'name':'DS24','value':600,'color':color.green},{'name':'DS34','value':400,'color':color.orange}]
 
@@ -459,6 +505,7 @@ if minimap:
     render_buffer.set_sort(-100)
 
     camera_pos = Entity(model="cube", position=(0, 10, 0), color=color.olive)
+    camera_pos.visible = False
     # camera_pos.hide()
     # New camera that copies the lens from the Ursina default camera,
     # and is rendering scene (all Ursina entities are attached to scene by default).
@@ -763,6 +810,7 @@ def update():
         if ui_visible:
             pass
         else:
+            toggle_button.visible = True
             wh.alpha = 1
             distanceup.alpha = 1
             distancetotal.alpha = 1

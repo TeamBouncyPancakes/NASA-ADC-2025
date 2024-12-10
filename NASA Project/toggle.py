@@ -89,7 +89,7 @@ class ToggleButton(Button):
         super().__init__(**kwargs)
         
 
-        self.scale = (0.5, 0.25) 
+        self.scale = (0.1, 0.05) 
         self.position = position
         self.color = color.white  
 
