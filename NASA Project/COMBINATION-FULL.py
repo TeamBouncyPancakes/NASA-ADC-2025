@@ -40,6 +40,7 @@ class ToggleButton(Button):
         self.scale = (0.1, 0.05) 
         self.position = position
         self.color = color.white  
+        self.alpha = 0.5
 
 
         # Create the lever that will move from left to right
@@ -58,19 +59,22 @@ class ToggleButton(Button):
 
 
     def on_click(self):
-        global toggle
+        global toggle, lb, lc
         self.is_on = not self.is_on
 
         if not self.is_on:
             self.lever.position = (0.375, 0)
+            # self.color = color.white 
             self.lever.color = color.red
-            self.color = color.white 
+            self.lever.alpha = 1
+            
             toggle = False
         else:
-          
+            # self.color = color.white
             self.lever.position = (-0.375, 0)
             self.lever.color = color.green  
-            self.color = color.white
+            self.lever.alpha = 1
+            
             toggle = True
 
 colors = [color.red, color.cyan, color.green, color.gold, color.pink, color.yellow, color.orange, color.brown,
@@ -320,7 +324,7 @@ keys = {key2a: key2b, key3a: key3b, key4a: key4b, key5a: key5b, key6a: key6b, ke
 
 distances = []
 
-toggle_button = ToggleButton(position=(-0.90, -0.25))
+toggle_button = ToggleButton(position=(-0.90, -0.15))
 toggle_button.visible = False
 
 # antennas = antennas = [{'name':'WPSA','value':1000,'color':color.red},{'name':'DS54','value':800,'color':color.azure},{'name':'DS24','value':600,'color':color.green},{'name':'DS34','value':400,'color':color.orange}]
@@ -400,6 +404,12 @@ antenna_locations = [
 
 earth_radius = 1.0  # The Earth's radius in your model is 1.0 unit (due to model scaling)
 
+mode_placer = Text(text="Mode:",x=-0.97,y=-0.2,font='assets/fonts/SpaceMono-Regular.ttf',size=0.01)
+mode_placer.visible = False
+lb = Text(text="Link Budget",x=-0.87,y=-0.2,font='assets/fonts/SpaceMono-Regular.ttf',size=0.01)
+lb.visible = False
+lc = Text(text="Least # of Changes",x=-0.87,y=-0.2,font='assets/fonts/SpaceMono-Regular.ttf',size=0.01)
+lc.visible = False
 
 def lat_lon_to_3d(lat, lon, radius):
     """Convert latitude and longitude to 3D coordinates on a sphere."""
@@ -807,6 +817,13 @@ def update():
         if ui_visible:
             pass
         else:
+            if toggle:
+                lc.visible = True
+                lb.visible = False
+            else:
+                lc.visible = False
+                lb.visible = True
+            mode_placer.visible = True
             toggle_button.visible = True
             wh.alpha = 1
             distanceup.alpha = 1
