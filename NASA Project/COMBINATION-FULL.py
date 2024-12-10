@@ -58,23 +58,20 @@ class ToggleButton(Button):
 
 
     def on_click(self):
-
+        global toggle
         self.is_on = not self.is_on
 
         if not self.is_on:
-
             self.lever.position = (0.375, 0)
             self.lever.color = color.red
             self.color = color.white 
-            self.cube.alpha = 1  
-            self.sphere.alpha = 0  
+            toggle = False
         else:
           
             self.lever.position = (-0.375, 0)
             self.lever.color = color.green  
-            self.color = color.white  
-            self.cube.alpha = 0  
-            self.sphere.alpha = 1  
+            self.color = color.white
+            toggle = True
 
 colors = [color.red, color.cyan, color.green, color.gold, color.pink, color.yellow, color.orange, color.brown,
           color.azure, color.lime]
@@ -897,6 +894,8 @@ def update():
                 prioritization_circle_identifier.texture = str(assets_prefix + str(should_look) + ".png")
             else:
                 prioritization_circle_identifier.texture = neutral_png
+
+
     else:
         prioritization_circle_identifier.hide()
         bg_for_circle_identifier.hide()
