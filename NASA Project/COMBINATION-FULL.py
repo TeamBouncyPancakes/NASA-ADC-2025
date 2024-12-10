@@ -377,16 +377,9 @@ antenna_models = [
 
 ]
 
-camera.fov = 100
 
-prioritization_circle_identifier = Entity(model='quad', texture="assets/antenna-prioritization/neutral2.png",
-                                          parent=camera.ui, scale=0.2)
-bg_for_circle_identifier = Entity(model='quad', texture="assets/antenna-prioritization/bg.png", parent=camera.ui,
-                                  scale=0.21)
 
-prioritization_circle_identifier.always_on_top = True
-# prioritization_circle_identifier.reparentTo(camera)
-# camera_pos.visible = False
+
 n = 0
 toggle = True
 
@@ -442,6 +435,15 @@ WPSA.entity.rotate((45, 300, 30), earth)
 model_number = 1
 
 if minimap:
+    prioritization_circle_identifier = Entity(model='quad', texture="assets/antenna-prioritization/neutral2.png",
+                                              parent=camera.ui, scale=0.2)
+    bg_for_circle_identifier = Entity(model='quad', texture="assets/antenna-prioritization/bg.png", parent=camera.ui,
+                                      scale=0.21)
+
+    prioritization_circle_identifier.always_on_top = True
+    # prioritization_circle_identifier.reparentTo(camera)
+    # camera_pos.visible = False
+
     properties = FrameBufferProperties()
     properties.set_rgb_color(True)
     properties.set_rgba_bits(80, 8, 8, 8)
@@ -457,7 +459,7 @@ if minimap:
     render_buffer.set_sort(-100)
 
     camera_pos = Entity(model="cube", position=(0, 10, 0), color=color.olive)
-    camera_pos.hide()
+    # camera_pos.hide()
     # New camera that copies the lens from the Ursina default camera,
     # and is rendering scene (all Ursina entities are attached to scene by default).
     render_camera = app.make_camera(render_buffer, lens=camera.lens, scene=scene)
@@ -607,7 +609,7 @@ def update():
         editor_camera.enabled = True
         ui_off()
 
-    global point_index, speed, points, distance, ci, pi, distances, phase, times, trajectory_line, model, current, inter, h
+    global minimap, point_index, speed, points, distance, ci, pi, distances, phase, times, trajectory_line, model, current, inter, h
     o = list(keys.items())
     # WASD camera movement
     if held_keys['w']: editor_camera.position += editor_camera.forward * time.dt * 5  # Move forward
@@ -797,7 +799,6 @@ def update():
                 point_index += 1
         # point_index += int(speed*len(points)/5.301)
 
-
     else:
         point_index = 0
         speed = overall_velocity[0]
@@ -830,28 +831,34 @@ def update():
         outline.x = window.bottom_right.x - outline.scale.x * 0.5
         outline.y = window.bottom_right.y + outline.scale.y * 0.5
 
-    none_active = "None active"
-    assets_prefix = "assets/antenna-prioritization/"
-    neutral_png = assets_prefix + "neutral.png"
+        none_active = "None active"
+        assets_prefix = "assets/antenna-prioritization/"
+        neutral_png = assets_prefix + "neutral.png"
 
-    if not toggle:
-        if csv_to_antenna(n) != none_active:
-            prioritization_circle_identifier.texture = str(assets_prefix + str(csv_to_antenna(n)) + ".png")
+        prioritization_circle_identifier.show()
+        outline.show()
+        bg_for_circle_identifier.show()
+        if not toggle:
+            if csv_to_antenna(point_index) != none_active:
+                prioritization_circle_identifier.texture = str(assets_prefix + str(csv_to_antenna(point_index)) + ".png")
+            else:
+                prioritization_circle_identifier.texture = neutral_png
         else:
-            prioritization_circle_identifier.texture = neutral_png
+            should_look = look_forwards(10, point_index)
+            if should_look != none_active:
+                prioritization_circle_identifier.texture = str(assets_prefix + str(should_look) + ".png")
+            else:
+                prioritization_circle_identifier.texture = neutral_png
     else:
-        should_look = look_forwards(10, n)
-        if should_look != none_active:
-            prioritization_circle_identifier.texture = str(assets_prefix + str(should_look) + ".png")
-        else:
-            prioritization_circle_identifier.texture = neutral_png
+        prioritization_circle_identifier.hide()
+        bg_for_circle_identifier.hide()
+
 
 
 def start():
     app.run()
 
 
-n = 0
 
 try:
     start()
