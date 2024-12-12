@@ -32,6 +32,51 @@ test = np.array(x_velocity ** 2 + y_velocity ** 2 + z_velocity ** 2)
 overall_velocity = np.array(np.sqrt(test))
 scale_factor = 0.000125
 
+class ToggleButton(Button):
+    def __init__(self, position=(0, 0), **kwargs):
+        super().__init__(**kwargs)
+        
+
+        self.scale = (0.1, 0.05) 
+        self.position = position
+        self.color = color.white  
+        self.alpha = 0.5
+
+
+        # Create the lever that will move from left to right
+        self.lever = Button(
+            model="quad",
+            color=color.green,
+            scale=(0.25, 0.8),  
+            position=(-0.375, 0),  
+            parent=self,
+            text="",
+            collider="box"
+        )
+
+
+        self.is_on = True
+
+
+    def on_click(self):
+        global toggle, lb, lc
+        self.is_on = not self.is_on
+
+        if not self.is_on:
+            self.lever.position = (0.375, 0)
+            # self.color = color.white 
+            self.lever.color = color.red
+            self.lever.alpha = 1
+            
+            toggle = False
+        else:
+            # self.color = color.white
+            self.lever.position = (-0.375, 0)
+            self.lever.color = color.green  
+            self.lever.alpha = 1
+            
+            toggle = True
+
 colors = [color.red, color.cyan, color.green, color.gold, color.pink, color.yellow, color.orange, color.brown,
           color.azure, color.lime]
 
@@ -279,6 +324,8 @@ keys = {key2a: key2b, key3a: key3b, key4a: key4b, key5a: key5b, key6a: key6b, ke
 
 distances = []
 
+toggle_button = ToggleButton(position=(-0.90, -0.15))
+toggle_button.visible = False
 
 # antennas = antennas = [{'name':'WPSA','value':1000,'color':color.red},{'name':'DS54','value':800,'color':color.azure},{'name':'DS24','value':600,'color':color.green},{'name':'DS34','value':400,'color':color.orange}]
 
@@ -357,6 +404,12 @@ antenna_locations = [
 
 earth_radius = 1.0  # The Earth's radius in your model is 1.0 unit (due to model scaling)
 
+mode_placer = Text(text="Mode:",x=-0.97,y=-0.2,font='assets/fonts/SpaceMono-Regular.ttf',size=0.01)
+mode_placer.visible = False
+lb = Text(text="Link Budget",x=-0.87,y=-0.2,font='assets/fonts/SpaceMono-Regular.ttf',size=0.01)
+lb.visible = False
+lc = Text(text="Least # of Changes",x=-0.87,y=-0.2,font='assets/fonts/SpaceMono-Regular.ttf',size=0.01)
+lc.visible = False
 
 def lat_lon_to_3d(lat, lon, radius):
     """Convert latitude and longitude to 3D coordinates on a sphere."""
@@ -377,8 +430,11 @@ antenna_models = [
 
 ]
 
-camera.fov = 100
 
+
+
+n = 0
+toggle = True
 
 class marker:
     def __init__(self, position=(0, 0, 0), color=color.white, scale=0.0005, parent=None, texture=None,
@@ -432,6 +488,15 @@ WPSA.entity.rotate((45, 300, 30), earth)
 model_number = 1
 
 if minimap:
+    prioritization_circle_identifier = Entity(model='quad', texture="assets/antenna-prioritization/neutral2.png",
+                                              parent=camera.ui, scale=0.2)
+    bg_for_circle_identifier = Entity(model='quad', texture="assets/antenna-prioritization/bg.png", parent=camera.ui,
+                                      scale=0.21)
+
+    prioritization_circle_identifier.always_on_top = True
+    # prioritization_circle_identifier.reparentTo(camera)
+    # camera_pos.visible = False
+
     properties = FrameBufferProperties()
     properties.set_rgb_color(True)
     properties.set_rgba_bits(80, 8, 8, 8)
@@ -447,7 +512,8 @@ if minimap:
     render_buffer.set_sort(-100)
 
     camera_pos = Entity(model="cube", position=(0, 10, 0), color=color.olive)
-    camera_pos.hide()
+    camera_pos.visible = False
+    # camera_pos.hide()
     # New camera that copies the lens from the Ursina default camera,
     # and is rendering scene (all Ursina entities are attached to scene by default).
     render_camera = app.make_camera(render_buffer, lens=camera.lens, scene=scene)
@@ -463,14 +529,14 @@ if minimap:
                        texture="assets/textures-models/space-textures/space4.jpg",
                        position=(0, 2, 0))
 
-    quad = Entity(model='quad', texture=minimap_texture, parent=camera.ui, scale=0.4)
+    minimap_quad = Entity(model='quad', texture=minimap_texture, parent=camera.ui, scale=0.4)
     # bg.always_on_top = False
-    quad.always_on_top = True
+    minimap_quad.always_on_top = True
 
 ui_objs = [logo, viewer_button, quit_button, play_button, viewer_text, play_text, quit_text, subtitle, menu_text, bg]
 if minimap:
     ui_objs.append(minimapbg)
-    ui_objs.append(quad)
+    ui_objs.append(minimap_quad)
 non_ui = [trajectory_line, earth, moon, space_bg]
 for antenna in antennas:
     non_ui.append(antenna)
@@ -597,7 +663,7 @@ def update():
         editor_camera.enabled = True
         ui_off()
 
-    global point_index, speed, points, distance, ci, pi, distances, phase, times, trajectory_line, model, current, inter, h
+    global minimap, point_index, speed, points, distance, ci, pi, distances, phase, times, trajectory_line, model, current, inter, h
     o = list(keys.items())
     # WASD camera movement
     if held_keys['w']: editor_camera.position += editor_camera.forward * time.dt * 5  # Move forward
@@ -751,6 +817,14 @@ def update():
         if ui_visible:
             pass
         else:
+            if toggle:
+                lc.visible = True
+                lb.visible = False
+            else:
+                lc.visible = False
+                lb.visible = True
+            mode_placer.visible = True
+            toggle_button.visible = True
             wh.alpha = 1
             distanceup.alpha = 1
             distancetotal.alpha = 1
@@ -787,7 +861,6 @@ def update():
                 point_index += 1
         # point_index += int(speed*len(points)/5.301)
 
-
     else:
         point_index = 0
         speed = overall_velocity[0]
@@ -804,42 +877,52 @@ def update():
             minimap = True
     global n
     n += 1
-    # bg_for_circle_identifier.x = window.top_left.x + bg_for_circle_identifier.scale.x * 0.5
-    # bg_for_circle_identifier.y = window.top_left.y - bg_for_circle_identifier.scale.y * 0.5
-    #
-    # prioritization_circle_identifier.x = window.top_left.x + prioritization_circle_identifier.scale.x * 0.5
-    # prioritization_circle_identifier.y = window.top_left.y - prioritization_circle_identifier.scale.y * 0.5
-    if minimap:
-        quad.x = window.bottom_right.x - quad.scale.x * 0.5
 
-        quad.y = window.bottom_right.y + quad.scale.y * 0.5
+    bg_for_circle_identifier.x = window.bottom_left.x + bg_for_circle_identifier.scale.x * 0.5
+    bg_for_circle_identifier.y = window.bottom_left.y + bg_for_circle_identifier.scale.y * 0.5
+
+    prioritization_circle_identifier.x = window.bottom_left.x + prioritization_circle_identifier.scale.x * 0.5
+    prioritization_circle_identifier.y = window.bottom_left.y + prioritization_circle_identifier.scale.y * 0.5
+
+    if minimap:
+        minimap_quad.x = window.bottom_right.x - minimap_quad.scale.x * 0.5
+
+        minimap_quad.y = window.bottom_right.y + minimap_quad.scale.y * 0.5
         bg.x = window.bottom_right.x - bg.scale.x * 0.5
         bg.y = window.bottom_right.y + bg.scale.y * 0.5
         outline.x = window.bottom_right.x - outline.scale.x * 0.5
         outline.y = window.bottom_right.y + outline.scale.y * 0.5
 
-    none_active = "None active"
-    assets_prefix = "assets/antenna-prioritization/"
-    neutral_png = assets_prefix + "neutral.png"
+        none_active = "None active"
+        assets_prefix = "assets/antenna-prioritization/"
+        neutral_png = assets_prefix + "neutral.png"
 
-    # if not toggle:
-    #     if csv_to_antenna(n) != none_active:
-    #         prioritization_circle_identifier.texture = str(assets_prefix + str(csv_to_antenna(n)) + ".png")
-    #     else:
-    #         prioritization_circle_identifier.texture = neutral_png
-    # else:
-    #     should_look = look_forwards(10, n)
-    #     if should_look != none_active:
-    #         prioritization_circle_identifier.texture = str(assets_prefix + str(should_look) + ".png")
-    #     else:
-    #         prioritization_circle_identifier.texture = neutral_png
+        prioritization_circle_identifier.show()
+        outline.show()
+        bg_for_circle_identifier.show()
+        if not toggle:
+            if csv_to_antenna(point_index) != none_active:
+                prioritization_circle_identifier.texture = str(assets_prefix + str(csv_to_antenna(point_index)) + ".png")
+            else:
+                prioritization_circle_identifier.texture = neutral_png
+        else:
+            should_look = look_forwards(10, point_index)
+            if should_look != none_active:
+                prioritization_circle_identifier.texture = str(assets_prefix + str(should_look) + ".png")
+            else:
+                prioritization_circle_identifier.texture = neutral_png
+
+
+    else:
+        prioritization_circle_identifier.hide()
+        bg_for_circle_identifier.hide()
+
 
 
 def start():
     app.run()
 
 
-n = 0
 
 try:
     start()
