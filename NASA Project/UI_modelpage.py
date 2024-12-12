@@ -14,13 +14,11 @@ slsbody_entity = Entity(model=slsbody, scale=(0.1, 0.1, 0.1), position=(10, 2.98
 slsbody_entity.rotation_z = 180
 slsbody_entity.rotation_y = 90
 slsnose = load_model('assets/textures-models/orion-models/orionmpcv.glb')
-# slsnosetext = load_texture('assets/textures-models/orion-models/orion_mpcv.mtl')
 slsnose_entity = Entity(model=slsnose, scale=(0.12, 0.12, 0.12), position=(4.1, -3.333, z_offset))
 sls = Entity()
 slsbody_entity.parent = sls
 slsnose_entity.parent = sls
 
-# txt = Text(text = "Artemis II mission.")
 
 icps = load_model('assets/textures-models/orion-models/icpstextured.glb')
 icps_entity = Entity(model=icps, scale=(0.014, 0.014, 0.014), position=(0.5, -2.8278, z_offset))
@@ -108,24 +106,12 @@ light = DirectionalLight(parent=artemis2)
 light.look_at(artemis2)
 
 
-
-
-# Create a pivot for capsule and service module rotation
-# capsule_pivot = Entity(parent=orion, position=capsule_entity.position)
-# service_module_pivot = Entity(parent=orion, position=service_module_entity.position)
-
-# capsule_entity.parent = capsule_pivot
-# service_module_entity.parent = service_module_pivot
-
 def input(inp):
     if held_keys['esc']:
         exit()
 
 def update():
-    # capsule_pivot.rotation_y += 1
-    # service_module_pivot.rotation_y += 1
-
-    # Rotate other parts (ICPS, nose, and body) independently if needed
+ 
     icps_entity.rotation_y += 1
     slsnose_entity.rotation_y += 1
     slsbody_entity.rotation_y += 1
@@ -159,22 +145,20 @@ def update():
     #     if held_keys['6']:
     #         separate(capsule_entity,artemis2)
     #         translate_orion(capsule_entity, 0, -0.01, 0)
-    # #     # if held_keys['right arrow']:
-    # #     #     rotate_orion(orion,5,0,0)
-    # #     # if held_keys['left arrow']:
-    # #     #     rotate_orion(orion,-5,0,0)
-    # #     # if held_keys['r']:
-    # #     #     rotate_orion(orion,0,5,0)
-    # #     # if held_keys['l']:
-    # #     #     rotate_orion(orion,0,-5,0)
+    #         if held_keys['right arrow']:
+    #             rotate_orion(orion,5,0,0)
+    #         if held_keys['left arrow']:
+    #             rotate_orion(orion,-5,0,0)
+    #         if held_keys['r']:
+    #             rotate_orion(orion,0,5,0)
+    #         if held_keys['l']:
+    #             rotate_orion(orion,0,-5,0)
     if held_keys['i']:
         player.y += 10 * time.dt  # Move up
     if held_keys['k']:
         player.y -= 10 * time.dt  # Move down
 
 
-# #     if held_keys['escape']:
-# #         exit(code=None
 
 
 player = EditorCamera()
