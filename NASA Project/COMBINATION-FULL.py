@@ -882,8 +882,8 @@ def update():
         bg_for_circle_identifier.x = window.bottom_left.x + bg_for_circle_identifier.scale.x * 0.5
         bg_for_circle_identifier.y = window.bottom_left.y + bg_for_circle_identifier.scale.y * 0.5
 
-    prioritization_circle_identifier.x = window.bottom_left.x + prioritization_circle_identifier.scale.x * 0.5
-    prioritization_circle_identifier.y = window.bottom_left.y + prioritization_circle_identifier.scale.y * 0.5
+        prioritization_circle_identifier.x = window.bottom_left.x + prioritization_circle_identifier.scale.x * 0.5
+        prioritization_circle_identifier.y = window.bottom_left.y + prioritization_circle_identifier.scale.y * 0.5
 
     if minimap:
         minimap_quad.x = window.bottom_right.x - minimap_quad.scale.x * 0.5
@@ -914,8 +914,6 @@ def update():
                 prioritization_circle_identifier.texture = neutral_png
 
 
-    else:
-        prioritization_circle_identifier.hide()
 
 
 
