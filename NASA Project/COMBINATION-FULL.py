@@ -877,9 +877,10 @@ def update():
             minimap = True
     global n
     n += 1
+    if minimap:
 
-    bg_for_circle_identifier.x = window.bottom_left.x + bg_for_circle_identifier.scale.x * 0.5
-    bg_for_circle_identifier.y = window.bottom_left.y + bg_for_circle_identifier.scale.y * 0.5
+        bg_for_circle_identifier.x = window.bottom_left.x + bg_for_circle_identifier.scale.x * 0.5
+        bg_for_circle_identifier.y = window.bottom_left.y + bg_for_circle_identifier.scale.y * 0.5
 
     prioritization_circle_identifier.x = window.bottom_left.x + prioritization_circle_identifier.scale.x * 0.5
     prioritization_circle_identifier.y = window.bottom_left.y + prioritization_circle_identifier.scale.y * 0.5
@@ -915,7 +916,6 @@ def update():
 
     else:
         prioritization_circle_identifier.hide()
-        bg_for_circle_identifier.hide()
 
 
 
