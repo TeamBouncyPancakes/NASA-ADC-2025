@@ -518,12 +518,14 @@ if minimap:
     # and is rendering scene (all Ursina entities are attached to scene by default).
     render_camera = app.make_camera(render_buffer, lens=camera.lens, scene=scene)
     # render_camera.NodePath.
-    render_camera.reparentTo(camera_pos)
+    #render_camera.reparentTo(camera_pos)
     # To display the results of the render texture.
     minimap_texture = Texture(render_texture)
 
     outline = Entity(model="quad", parent=camera.ui, scale=0.41, texture="assets/minimap-stuffs/outline-bg.jpg",
                      position=(0, 2, 0))
+    
+    outline.alpha = 0
 
     minimapbg = Entity(model="quad", parent=camera.ui, scale=0.4,
                        texture="assets/textures-models/space-textures/space4.jpg",
@@ -531,7 +533,7 @@ if minimap:
 
     minimap_quad = Entity(model='quad', texture=minimap_texture, parent=camera.ui, scale=0.4)
     # bg.always_on_top = False
-    minimap_quad.always_on_top = True
+    minimap_quad.always_on_top = False
 
 ui_objs = [logo, viewer_button, quit_button, play_button, viewer_text, play_text, quit_text, subtitle, menu_text, bg]
 if minimap:
