@@ -511,8 +511,8 @@ if minimap:
     # Negative means before the rest of the normal scene is drawn.
     render_buffer.set_sort(-100)
 
-    camera_pos = Entity(model="cube", position=(0, 10, 0), color=color.olive)
-    camera_pos.visible = False
+    camera_pos = Entity(model="cube", position=(-1, 20, 0),rotation = (96,96,0), color=color.olive)
+    camera_pos.visible = True
     # camera_pos.hide()
     # New camera that copies the lens from the Ursina default camera,
     # and is rendering scene (all Ursina entities are attached to scene by default).
@@ -649,7 +649,7 @@ def translate_orion(e, x, y, z):
 ambient_light = AmbientLight()
 ambient_light.intensity = 0.5
 
-print(camera.position)
+print("This is Camera Position",camera.position)
 
 
 def update():
@@ -657,7 +657,7 @@ def update():
     if ui_visible:
         editor_camera.enabled = False
         editor_camera.position = (0, 0, -10)
-        editor_camera.rotation = (0, 0, 0)
+        editor_camera.rotation = (0, 0 , 0)
         ui_on()
     else:
         editor_camera.enabled = True
@@ -674,6 +674,27 @@ def update():
     if held_keys['e']: editor_camera.position -= editor_camera.up * time.dt * 5  # Move down
     if held_keys["escape"]:
         quit()
+    if held_keys['left arrow']:
+        camera_pos.rotation_y -= 60 * time.dt
+    if held_keys['right arrow']:
+        camera_pos.rotation_y += 60 * time.dt
+    if held_keys['up arrow']:
+        camera_pos.rotation_x -= 60 * time.dt
+    if held_keys['down arrow']:
+        camera_pos.rotation_x += 60 * time.dt
+        print(camera_pos.rotation_x, camera_pos.rotation_y)
+    if held_keys['8']:
+        camera_pos.position += camera_pos.forward * time.dt
+        print(camera_pos.rotation_x, camera_pos.rotation_y)
+    if held_keys['5']:
+        camera_pos.position -= camera_pos.forward * time.dt
+        print(camera_pos.rotation_x, camera_pos.rotation_y)
+    if held_keys['6']:
+        camera_pos.position += camera_pos.right * time.dt
+        print(camera_pos.rotation_x, camera_pos.rotation_y)
+    if held_keys['4']:
+        camera_pos.position -= camera_pos.right * time.dt
+        print(camera_pos.rotation_x, camera_pos.rotation_y)
 
     if point_index < len(points):
         currents = points[point_index + 2]
@@ -686,11 +707,10 @@ def update():
         # intergrating orion onto trajectory
         direction = (currents - previous).normalized()
         orion_master.position += direction * 1 * time.dt
-
         if direction.length() > 0:
             # Calculate the angle in radians
             target_rotation_y = math.degrees(math.atan2(direction.x, direction.y))
-            orion_master.rotation_y = lerp(orion_master.rotation_y, target_rotation_y, 5 * time.dt)
+            orion_master.rotation_y =lerp(orion_master.rotation_y, target_rotation_y, 5 * time.dt)
 
             # Update the front's orientation to match the direction of movement
             tp = orion_master.position + direction
@@ -877,13 +897,12 @@ def update():
             minimap = True
     global n
     n += 1
-    if minimap:
 
-        bg_for_circle_identifier.x = window.bottom_left.x + bg_for_circle_identifier.scale.x * 0.5
-        bg_for_circle_identifier.y = window.bottom_left.y + bg_for_circle_identifier.scale.y * 0.5
+    bg_for_circle_identifier.x = window.bottom_left.x + bg_for_circle_identifier.scale.x * 0.5
+    bg_for_circle_identifier.y = window.bottom_left.y + bg_for_circle_identifier.scale.y * 0.5
 
-        prioritization_circle_identifier.x = window.bottom_left.x + prioritization_circle_identifier.scale.x * 0.5
-        prioritization_circle_identifier.y = window.bottom_left.y + prioritization_circle_identifier.scale.y * 0.5
+    prioritization_circle_identifier.x = window.bottom_left.x + prioritization_circle_identifier.scale.x * 0.5
+    prioritization_circle_identifier.y = window.bottom_left.y + prioritization_circle_identifier.scale.y * 0.5
 
     if minimap:
         minimap_quad.x = window.bottom_right.x - minimap_quad.scale.x * 0.5
@@ -900,6 +919,7 @@ def update():
 
         prioritization_circle_identifier.show()
         outline.show()
+        minimap_quad.show()
         bg_for_circle_identifier.show()
         if not toggle:
             if csv_to_antenna(point_index) != none_active:
@@ -914,6 +934,9 @@ def update():
                 prioritization_circle_identifier.texture = neutral_png
 
 
+    else:
+        prioritization_circle_identifier.hide()
+        bg_for_circle_identifier.hide()
 
 
 
@@ -928,4 +951,3 @@ try:
 
 except Exception as e:
     print(e, "ERRRRRRRRRROEEEEEEEE")
-
