@@ -89,4 +89,7 @@ player.gravity = 0
 player.scale = 0.5
 
 
-app.run()
+if __name__ == "__main__":
+    app.run()
+else:
+    print("APP IS NOT RUNNING - orion_demo.PY")
