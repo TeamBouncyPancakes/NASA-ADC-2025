@@ -51,9 +51,6 @@ index = 1
 trajectory_line, current = create_trajectory_line(colors[ci],0,1)
 
 
-editor_camera = EditorCamera(pan_speed = 1000)
- 
-camera.fov = 155
 
 point_index = 0
 overall_velocity = overall_velocity * 0.001
@@ -277,14 +274,20 @@ ambient_light = AmbientLight()
 ambient_light.intensity = 0.5
 
 def update():
+
+    if held_keys['z']:
+        camera.fov = 90
+    else:
+        camera.fov = 155
+
     global point_index, speed, points, distances, current, inter, colors,times,ci,phase, trajectory_line, distance
     # WASD camera movement
-    if held_keys['w']: editor_camera.position += editor_camera.forward * time.dt * 5  # Move forward
-    if held_keys['s']: editor_camera.position -= editor_camera.forward * time.dt * 5  # Move backward
-    if held_keys['a']: editor_camera.position -= editor_camera.right * time.dt * 5    # Move left
-    if held_keys['d']: editor_camera.position += editor_camera.right * time.dt * 5    # Move right
-    if held_keys['q']: editor_camera.position += editor_camera.up * time.dt * 5       # Move up
-    if held_keys['e']: editor_camera.position -= editor_camera.up * time.dt * 5       # Move down
+    # if held_keys['w']: editor_camera.position += editor_camera.forward * time.dt * 5  # Move forward
+    # if held_keys['s']: editor_camera.position -= editor_camera.forward * time.dt * 5  # Move backward
+    # if held_keys['a']: editor_camera.position -= editor_camera.right * time.dt * 5    # Move left
+    # if held_keys['d']: editor_camera.position += editor_camera.right * time.dt * 5    # Move right
+    # if held_keys['q']: editor_camera.position += editor_camera.up * time.dt * 5       # Move up
+    # if held_keys['e']: editor_camera.position -= editor_camera.up * time.dt * 5       # Move down
     pi = 0
 
     if point_index < len(points):
@@ -431,17 +434,22 @@ def update():
             orion_maste.position=Vec3(0,0,0)
 
         if ci>=9:
-            orion_capsule.parent=None
-            orion_capsule.z -= 0.5
+            capsule_entity.parent=None
+            capsule_entity.z -= 0.1
+            capsule_entity.rotation_x = 0.1
             orion_maste.position=Vec3(0,0,0)
 
 
 
-        orion_master.position =  Vec3(currents.x,currents.y,currents.z) #clean_line(currents, next, inter)
+        
+        orion_master.position =  Vec3(currents.x-0.05,currents.y+0.07,currents.z+0.05) #clean_line(currents, next, inter)
+        if held_keys['z']:
+            camera.position=Vec3(orion_master.x, orion_master.y, orion_master.z-1.5)
         speed = overall_velocity[point_index]
         x,y,z = orion_master.position
         x2,y2,z2 = next
 
+    
     
 
         current.append(points[point_index + 1])
