@@ -206,7 +206,7 @@ slsnose_entity.y = 10
 icps = load_model('assets/textures-models/orion-models/icpstextured.glb')
 service_module = load_model('assets/textures-models/orion-models/servicemoduletextured.glb')
 capsule = load_model('assets/textures-models/orion-models/orioncapsuletextured.glb')
-capsule_entity = Entity(model=capsule, position=(-1.7,3.21,-0.18))
+capsule_entity = Entity(model=capsule, position=(-1.8,3.21,-0.4))
 service_module_entity = Entity(model=service_module, scale = 1, position=(-3.5,1.2,0))
 orion = Entity(scale = (0.2,0.2,0.2))
 orion.position=(0, 0, 0)
